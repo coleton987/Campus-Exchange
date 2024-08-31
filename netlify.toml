@@ -1,0 +1,17 @@
+[build]
+  # Specify the build command
+  command = "pipenv install && pipenv run python manage.py collectstatic --noinput && pipenv run python manage.py migrate"
+  
+  # The directory to publish after the build
+  publish = "public"
+
+[context.production.environment]
+  # Define environment variables
+  DJANGO_SETTINGS_MODULE = "your_project_name.settings.production"
+  PYTHON_VERSION = "3.11"
+
+# Optional: Define redirects if needed
+[[redirects]]
+  from = "/api/*"
+  to = "/api/index.html"
+  status = 200  

@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block img%}
+<img src="https://assets.answersingenesis.org/img/cms/content/contentnode/header_image/colleges/bob-jones-university-header.jpg" class='img'>
+{% endblock %}
+
+{% block content %}
+     <section class="intro">
+        <h2>Welcome to BJU Exchange!</h2>
+        <p>Your One-Stop Shop for Buying & Selling within the BJU Community</p>
+    </section>
+
+    <section class="benefits">
+        <h2>Why Use BJU Exchange?</h2>
+        <ul>
+            <li><strong>Exclusive to BJU Students</strong>: Connect with fellow Bruins in a secure and trusted environment.</li>
+            <li><strong>Buy & Sell Anything</strong>: From textbooks to tech gadgets, find exactly what you need or get rid of what you don't.</li>
+            <li><strong>Support Your Peers</strong>: Keep it local by trading within your community.</li>
+        </ul>
+    </section>
+
+    <section class="get-started">
+        <h2>Get Started Today!</h2>
+        <p><strong>Sign Up</strong>: Create your account using your BJU email to start buying and selling.</p>
+        <p><strong>Browse Listings</strong>: Explore a wide range of products and services posted by your fellow students.</p>
+        <p><strong>Post Your Own Ads</strong>: Have something to sell? Create a listing in just a few clicks!</p>
+    </section>
+
+    <section class="community">
+        <h2>Join the BJU Exchange Community</h2>
+        <p>Start exploring today and experience the convenience of buying and selling within the BJU community. Let’s keep it all in the family, Bruins!</p>
+    </section>
+
+    <div class="auth-buttons">
+        <a href="/users/register" class="btn sign-up-btn">Sign Up</a>
+        <a href="/users/log_in" class="btn login-btn">Login</a>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2024 BJU Exchange. All rights reserved.</p>
+</footer>
+                
+{% endblock %}
+
+
+
+
+

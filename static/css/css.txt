@@ -1,0 +1,330 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    color: #333;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.img {
+    width: 100%; /* Set the width to 100% of the screen */
+    height: auto; /* Automatically adjust height to maintain aspect ratio */
+    background-image: url('https://www.usnews.com/dims4/USNEWS/9f1b227/17177859217/resize/800x540%3E/quality/85/?url=https%3A%2F%2Fwww.usnews.com%2Fcmsmedia%2F9d%2Fa8%2F9dc631084b32b97f21e03e16f7e5%2Fbjucustomhero-20200908ra-de2-1920x760.jpg');
+}
+
+/* Navigation Bar */
+nav {
+    padding: 1rem;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    font-size: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Main Content */
+main {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Section Styling */
+section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+h1, h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #666;
+}
+
+.con {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Links */
+.nav-links{
+    margin: 0;
+    display: inline;
+    text-align: left;
+    padding-top: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: #f1f3f5;
+}
+
+a:hover {
+    color: #79a6ce;
+}
+
+/* Buttons */
+.my-div {
+    margin: 0;
+    display: inline;
+    text-align: right;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.sign-up-btn {
+    background-color: #28a745;
+}
+
+.sign-up-btn:hover {
+    background-color: #218838;
+}
+
+.login-btn {
+    background-color: #17a2b8;
+}
+
+.login-btn:hover {
+    background-color: #138496;
+}
+
+/* Forms */
+.form-with-validation {
+    font-size: 1rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-with-validation div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-with-validation input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.form-submit {
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.form-submit:hover {
+    background-color: #0056b3;
+}
+
+/* Containers */
+.center {
+    display: flex;
+    justify-content: center;
+    text-align: left;
+    margin-top: 50px;
+}
+
+.cen {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.box {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    background-color: #fff;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Media Queries for the rest of the website */
+@media (max-width: 768px) {
+    body {
+        font-size: 0.9rem;
+    }
+
+    h1, h2 {
+        font-size: 1.8rem;
+    }
+
+    .form-submit, .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 0.8rem;
+    }
+
+    nav {
+        font-size: 1.2rem;
+    }
+
+    h1, h2 {
+        font-size: 1.5rem;
+    }
+
+    .form-with-validation input, .form-submit, .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+}
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
+
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+}
+
+.product-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+    max-width: 300px;
+    margin: 10px;
+    transition: transform 0.2s;
+    min-width: max-content;
+}
+
+.product-card:hover {
+    transform: scale(1.03);
+}
+
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #ccc;
+}
+
+.product-info {
+    padding: 15px;
+}
+
+.product-title {
+    font-size: 1.5rem;
+    margin: 10px 0;
+    color: #333;
+}
+
+.product-description,
+.product-price,
+.product-stock,
+.product-updated {
+    margin: 5px 0;
+}
+
+/* Mobile Styles */
+@media (max-width: 600px) {
+    .product-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-card {
+        width: 90%;
+        max-width: 100%;
+    }
+
+    .product-title {
+        font-size: 1.2rem;
+    }
+}
+
+/* Tablet and Small Desktops */
+@media (min-width: 601px) and (max-width: 900px) {
+    .product-grid {
+        justify-content: space-around;
+    }
+
+    .product-card {
+        width: 45%;
+    }
+
+    .product-title {
+        font-size: 1.3rem;
+    }
+}
+
+/* Larger Desktops */
+@media (min-width: 901px) {
+    .product-card {
+        width: 30%;
+    }
+
+    .product-title {
+        font-size: 1.5rem;
+    }
+}

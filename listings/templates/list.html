@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+    Product List
+{% endblock %}
+
+{% block content %}
+<h1>Products</h1>
+
+<div class="product-grid">
+    {% for product in products %}
+    <a href="{% url 'product_details' product.id %}">
+        <div class="product-card">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+            {% endif %}
+            
+            <div class="product-info">
+                <h2 class="product-title">{{ product.name }}</h2>
+                {% comment %} <p class="product-description"><strong>Description:</strong> {{ product.description }}</p> {% endcomment %}
+                <p class="product-price"><strong>Price:</strong> ${{ product.price }}</p>
+                {% comment %} <p class="product-stock"><strong>Stock:</strong> {{ product.stock }} items available</p>
+                <p class="product-updated"><strong>Last Updated:</strong> {{ product.updated_at }}</p> {% endcomment %}
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

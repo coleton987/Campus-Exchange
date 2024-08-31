@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+
+
+    <div class='center'>
+    <div class='box'>
+        <h1 class='cen'>Login</h1>  
+    
+    
+    
+        <form class="form-with-validation" action="/users/log_in/" method="post">
+            {% csrf_token %}
+            {% if num  == 1 %}
+                <p> The username or password is incorrect</p>
+            {% endif %}
+            <label for="username">Email:</label>
+            <input type='text' id='username' name='username'>
+            <label for="password">Password:</label>
+            <input type='text' id='password' name='password'>
+            <button class="form-submit">Submit</button>
+        </form>
+    </div>
+    </div>
+{% endblock %} 
