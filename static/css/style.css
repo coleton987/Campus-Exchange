@@ -347,3 +347,133 @@ h1 {
         max-width: 100%;  /* Ensure the image scales down on smaller screens */
     }
 }
+
+
+
+.drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.drop-area.dragging {
+    background-color: #f0f0f0;
+}
+
+.drop-area p {
+    font-size: 16px;
+    color: #777;
+}
+
+.preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.preview-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+input[type="file"] {
+    border: 2px dashed #bebebe;
+    
+    padding-top: 50px;
+    padding-bottom: 50px;
+    padding-left: 350px;
+    padding-right: 350px;
+    cursor: pointer;
+
+}
+
+.drag_title {
+    text-align: center;
+}
+
+
+
+/* Add some basic styling to the body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Style the main container */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Style the heading */
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Style the form */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Style the form fields */
+form input, form textarea, form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Style the Dropzone area */
+.dropzone {
+    border: 2px dashed #007bff;
+    border-radius: 4px;
+    background: #f9f9f9;
+    padding: 20px;
+    text-align: center;
+    color: #007bff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Style the submit button */
+button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Add some spacing between form fields */
+form .form-group {
+    margin-bottom: 15px;
+}
+
+
+
+
+
