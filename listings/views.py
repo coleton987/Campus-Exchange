@@ -11,13 +11,10 @@ def add_product(request):
         if product_form.is_valid():
             product = product_form.save()
 
-            images = request.FILES.getlist('images')
-            for image in images:
-                ProductImage.objects.create(product=product, image=image)
-
-            return redirect('product_list')  # Redirect after saving
+            # Return the product ID as JSON response
+            return JsonResponse({'product_id': product.id}, status=200)
         else:
-            print(product_form.errors)
+            return JsonResponse({'errors': product_form.errors}, status=400)
     else:
         product_form = ProductForm()
 
@@ -26,7 +23,7 @@ def add_product(request):
 
 
 def file_upload(request):
-    for i in range(20):
+    for i in range(2):
         print("Hello")
     if request.method == 'POST':
         # Fetch the product (you may need to send product ID from Dropzone)

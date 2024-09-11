@@ -12,8 +12,13 @@
     {% for product in products %}
     <a href="{% url 'product_details' product.id %}">
         <div class="product-card">
-            {% if product.image %}
-            <img src="{{ product_images.image.url}}" alt="{{ product.name }}" class="product-image">
+            <!-- Check if the product has any images -->
+            {% if product.images.all %}
+                <!-- Loop through all images related to the product and display the first one -->
+                <img src="{{ product.images.all.0.image.url }}" alt="{{ product.name }}" class="product-image">
+            {% else %}
+                <!-- Fallback if there are no images -->
+                <img src="{% static 'placeholder.jpg' %}" alt="No image available" class="product-image">
             {% endif %}
             
             <div class="product-info">
