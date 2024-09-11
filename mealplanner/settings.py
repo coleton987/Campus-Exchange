@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'listings',
-    'test_image',
     'image_uploader_widget',
 ]
 

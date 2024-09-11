@@ -9,14 +9,16 @@
 <h1>Add a New Product</h1>
 
 <!-- Product Form -->
-<form id="productForm" method="post">
+<form id="productForm" method="post" >
     {% csrf_token %}
     {{ product_form.as_p }}
-    <div class="dropzone" id="my-awesome-dropzone"></div>
+    <div class="dropzone" id="my-awesome-dropzone">
+        
+    </div> 
     <button type="submit" id="submit-product-btn">Add Product</button>
 </form>
 
-<!-- Dropzone.js Image Upload -->
+
 
 <!-- Dropzone.js CSS from CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css" />
@@ -24,69 +26,79 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
 
 <script>
-    var csrftoken = "{{ csrf_token }}";  // Pass the CSRF token from Django to JavaScript
-    var productId = null;  // Store product ID once created
     
-    Dropzone.autoDiscover = false;
+Dropzone.autoDiscover = false;
 
-    
-    // Initialize Dropzone for image uploads
-    var myDropzone = new Dropzone("#my-awesome-dropzone", {
-        url: "file_upload/",  // URL to upload files
-        paramName: "file",
-        maxFilesize: 5, // MB
-        parallelUploads: 6,  // Upload 6 files at a time
-        maxFiles: 6,  // Maximum 6 files
-        acceptedFiles: "image/*",
-        autoProcessQueue: false,  // Disable automatic processing
-        addRemoveLinks: true, 
+var csrftoken = "{{ csrf_token }}";  // Pass the CSRF token from Django to JavaScript
+//var productId = null;  // Store product ID once created
+
+// Initialize Dropzone for image uploads
+var myDropzone = new Dropzone("#my-awesome-dropzone", {
+    url: "{% url 'file_upload' %}",  // URL to upload files
+    paramName: "file",
+    maxFilesize: 5,  // MB
+    parallelUploads: 6,  // Upload 6 files at a time
+    maxFiles: 6,  // Maximum 6 files
+    acceptedFiles: "image/*",
+    autoProcessQueue: false,  // Disable automatic processing
+    addRemoveLinks: true, 
+    headers: {
+        "X-CSRFToken": csrftoken
+    },
+    init: function() {
+        this.on("sending", function(file, xhr, formData) {
+            // Append the product_id to the form data
+            formData.append("product_id", productId);
+        });
+        this.on("queuecomplete", function() {
+            // After all images are uploaded, redirect to the product list
+            window.location.href = "{% url 'product_list' %}";
+        });
+        this.on("error", function(file, response) {
+            console.log("Error uploading image:", response);
+        });
+    }
+});
+document.getElementById("submit-product-btn").addEventListener("click", function(event) {
+    event.preventDefault();  // Prevent default form submission
+
+    // Capture form data
+    var form = document.getElementById("productForm");
+    var formData = new FormData(form);
+
+    // Send form data to the server using Fetch API
+    fetch("{% url 'add_product' %}", {
+        method: "POST",
         headers: {
-            "X-CSRFToken": csrftoken
+            'X-CSRFToken': csrftoken
         },
-        init: function() {
-            this.on("sending", function(file, xhr, formData) {
-                // Append the product_id to the form data
-                formData.append("product_id", productId);
-            });
-            this.on("success", function(file, response) {
-                console.log("Image uploaded successfully.");
-            });
-            this.on("error", function(file, response) {
-                console.log("Error uploading image:", response);
-            });
-        }
-    });
-
-    // Handle form submission for product details
-    document.getElementById("submit-product-btn").addEventListener("click", function(event) {
-        event.preventDefault();  // Prevent default form submission
-
-        var formData = new FormData(document.getElementById("productForm"));
-        
-        fetch("{% url 'add_product' %}", {
-            method: "POST",
-            headers: {
-                'X-CSRFToken': csrftoken
-            },
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.product_id) {
-                // Store the created product ID for Dropzone uploads
-                productId = data.product_id;
-                
-                // Now that the product is created, process the Dropzone queue
-                myDropzone.processQueue();
+        body: formData
+    })
+    .then(response => response.json())  // Expect JSON response
+    .then(data => {
+        if (data.product_id) {
+            // Set the productId for future use
+            productId = data.product_id;
+            
+            // Now process the Dropzone queue
+            if (myDropzone.getQueuedFiles().length > 0) {
+                myDropzone.processQueue();  // Upload files in Dropzone
             } else {
-                console.log("Error:", data.errors);
+                console.log("No files to upload.");
+                // Optionally redirect if no files to upload
+                window.location.href = "{% url 'product_list' %}";
             }
-        })
-        .catch(error => console.error("Error:", error));
-    });
-    document.querySelector("form").addEventListener("submit", function() {
-        this.querySelector("button[type='submit']").disabled = true;
-    });
-    
+        } else {
+            console.log("Error: Product ID not returned.");
+        }
+    })
+    .catch(error => console.error("Error:", error));
+});
+
+
+
 </script>
+
+
+
 {% endblock %}
