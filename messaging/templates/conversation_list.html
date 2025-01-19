@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+<html lang="en">
+{% block title %}
+   Messages
+{% endblock %}
+
+{% block css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/messaging.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>Your Conversations</h1>
+<div class="conv_cards">
+    {% for conversation in conversations %}
+    <a href="{% url 'conversation_detail' conversation.id %}" class="conv_card">
+        <div class="card_content">
+            <img src="{{ conversation.product.images.all.0.image.url }}" alt="{{ conversation.product.name }}" class="product-image">
+            <div class="card_text">
+                <p>
+                    Conversation with 
+                    {% for participant in conversation.participants.all %}
+                        {% if participant != request.user %}
+                            <span>{{ participant.full_name }}</span>
+                        {% endif %}
+                    {% endfor %}
+                    about <strong>{{ conversation.product.name }}</strong>
+                </p>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

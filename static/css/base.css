@@ -1,0 +1,125 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    color: #333;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Navigation Bar */
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 1rem;
+    background-color: #333;
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+nav .con {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+}
+
+.my-div a {
+    margin-left: 1rem;
+}
+
+/* Main Content */
+main {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 60px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #333;
+    color: white;
+    font-size: 0.9rem;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.sign-up-btn {
+    background-color: #28a745;
+}
+
+.sign-up-btn:hover {
+    background-color: #218838;
+}
+
+.login-btn {
+    background-color: #17a2b8;
+}
+
+.login-btn:hover {
+    background-color: #138496;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    body {
+        font-size: 0.9rem;
+    }
+
+    .img-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 0.8rem;
+    }
+
+    nav {
+        font-size: 1.2rem;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    .btn {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+    }
+}

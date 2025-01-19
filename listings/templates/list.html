@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+    Product List
+{% endblock %}
+
+{% block css %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/listings.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>Listings</h1>
+
+<div class="product-grid">
+    {% for product in products %}
+    <a href="{% url 'product_details' product.id %}">
+        <div class="product-card">
+            <!-- Check if the product has any images -->
+            {% if product.images.all %}
+                <!-- Loop through all images related to the product and display the first one -->
+                <img src="{{ product.images.all.0.image.url }}" alt="{{ product.name }}" class="product-image" width='250' length='300'>
+            {% else %}
+                <!-- Fallback if there are no images -->
+                <img src="{% static 'placeholder.jpg' %}" alt="No image available" class="product-image">
+            {% endif %}
+            
+            <div class="product-info">
+                <h2 class="product-title">{{ product.name }}</h2>
+                <p class="product-description"><strong>Description:</strong> 
+                    {% if product.description|length > 20 %}
+                        {{ product.description|slice:":20" }}...
+                    {% else %}
+                        {{ product.description }}
+                    {% endif %}
+                </p>
+                <p class="product-price"><strong>Price:</strong> ${{ product.price }}</p>
+                {% comment %} <p class="product-stock"><strong>Stock:</strong> {{ product.stock }} items available</p> {% endcomment %}
+                <p class="product-updated"><strong></strong> {{ product.updated_at }}</p>
+            </div>
+            
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

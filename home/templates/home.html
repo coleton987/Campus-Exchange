@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block header%}
+<div class="image-container">
+    <img src="https://seminary.bju.edu/files/2019/02/20180425front-campus-hc.jpg" alt="Campus" class="img">
+    <h1 class="img-title">Campus Exchange</h1>
+</div>
+{% endblock %}
+
+{% block css %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+
+{% block content %}
+     <section class="intro">
+        <h2>Welcome to Campus Exchange!</h2>
+        <p>Your One-Stop Shop for Buying & Selling within the BJU Community</p>
+    </section>
+
+    <section class="benefits">
+        <h2>Why Use Campus Exchange?</h2>
+        <ul>
+            <li><strong>Exclusive to Campus Students</strong>: Connect with fellow Bruins in a secure and trusted environment.</li>
+            <li><strong>Buy & Sell Anything</strong>: From textbooks to tech gadgets, find exactly what you need or get rid of what you don't.</li>
+            <li><strong>Support Your Peers</strong>: Keep it local by trading within your community.</li>
+        </ul>
+    </section>
+
+    <section class="get-started">
+        <h2>Get Started Today!</h2>
+        <p><strong>Sign Up</strong>: Create your account using your Campus email to start buying and selling.</p>
+        <p><strong>Browse Listings</strong>: Explore a wide range of products and services posted by your fellow students.</p>
+        <p><strong>Post Your Own Ads</strong>: Have something to sell? Create a listing in just a few clicks!</p>
+    </section>
+
+    <section class="community">
+        <h2>Join the Campus Exchange Community</h2>
+        <p>Start exploring today and experience the convenience of buying and selling within the Campus community. Let’s keep it all in the family, Bruins!</p>
+    </section>
+{% if user.is_authenticated %}
+    <a href="/users/log_out" class="btn login-btn">Logout</a>
+{% else %}
+    <a href="/users/register" class="btn sign-up-btn">Sign Up</a>
+    <a href="/users/log_in" class="btn login-btn">Login</a>
+{% endif %} 
+</main>
+
+<footer>
+    <p>&copy; 2024 Campus Exchange. All rights reserved.</p>
+</footer>
+                
+{% endblock %}
+
+
+
+
+

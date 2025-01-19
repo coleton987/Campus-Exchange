@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    {{ product.name }} Details
+{% endblock %}
+
+{% block css %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/listings.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="product-detail">
+    <div class="product-detail-container">
+        <div class="product-images">
+            <!-- Carousel Container -->
+            <div class="carousel-container">
+                <button class="carousel-button prev-button" onclick="prevImage()">&#10094;</button>
+
+                <div class="carousel-images">
+                    {% for image in product.images.all %}
+                        <img src="{{ image.image.url }}" alt="{{ product.name }}" class="carousel-image">
+                    {% endfor %}
+                </div>
+                
+                
+                <button class="carousel-button next-button" onclick="nextImage()">&#10095;</button>
+                
+            </div>
+        </div>
+        <div class="product-info">
+            <h1>{{ product.name }}</h1>
+            <p class="product-price"><strong>Price:</strong> ${{ product.price }}</p>
+            <p class="product-description"><strong>Description:</strong> {{ product.description }}</p>
+            <p class="product-stock"><strong>Stock:</strong> {{ product.stock }} items available</p>
+            
+            {% if  product.seller  != request.user%}
+            <a href="/messaging/start_conv?user_id={{ product.seller }}&product_id={{ product.id }}" class="message-button">Message Seller</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- Include JavaScript at the bottom of the page for better performance -->
+<script>
+let currentImageIndex = 0;
+const images = document.querySelectorAll('.carousel-image');
+
+function showImage(index) {
+    images.forEach((img, i) => {
+        img.classList.remove('active');
+        if (i === index) {
+            img.classList.add('active');
+        }
+    });
+}
+
+function nextImage() {
+    currentImageIndex = (currentImageIndex + 1) % images.length;
+    showImage(currentImageIndex);
+}
+
+function prevImage() {
+    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+    showImage(currentImageIndex);
+}
+
+// Initially show the first image
+showImage(currentImageIndex);
+</script>
+{% endblock %}

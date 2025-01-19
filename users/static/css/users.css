@@ -1,0 +1,94 @@
+/* Image Styles */
+.img {
+    width: 100%;
+    height: auto;
+    background-image: url('https://www.usnews.com/dims4/USNEWS/9f1b227/17177859217/resize/800x540%3E/quality/85/?url=https%3A%2F%2Fwww.usnews.com%2Fcmsmedia%2F9d%2Fa8%2F9dc631084b32b97f21e03e16f7e5%2Fbjucustomhero-20200908ra-de2-1920x760.jpg');
+}
+
+.product-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Dropzone Area */
+.dropzone {
+    border: 2px dashed #007bff;
+    border-radius: 4px;
+    background: #f9f9f9;
+    padding: 20px;
+    text-align: center;
+    color: #007bff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Product Grid */
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+}
+
+.product-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 30%;
+    transition: transform 0.2s;
+}
+
+.product-card:hover {
+    transform: scale(1.03);
+}
+
+.cen {
+    text-align: center;
+}
+
+
+/* Form Styles */
+.form-with-validation {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 40%; /* Adjust the width of the form container */
+    margin: 0 auto; /* Center the form */
+}
+
+
+.form-with-validation input,
+.form-with-validation textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%; /* Ensure input fields take up the full width of the form container */
+}
+
+.form-submit {
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Make the submit button match the input width */
+}
+
+.form-submit:hover {
+    background-color: #0056b3;
+}

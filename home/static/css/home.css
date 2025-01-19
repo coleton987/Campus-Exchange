@@ -1,0 +1,50 @@
+/* Image Container with Title Overlay */
+.image-container {
+    position: relative;
+    width: 100%;
+}
+
+.img {
+    width: 100%;
+    height: auto;
+}
+
+.img-title {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(7, 7, 7);
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+/* Header Image */
+.header-image {
+    position: relative;
+    width: 100%;
+}
+
+.img {
+    width: 100%;
+    height: auto;
+}
+
+/* Section Styling */
+section {
+    margin-bottom: 2rem;
+}
+
+h1, h2 {
+    font-size: 2rem;
+    text-align: center;
+    color: #333;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #666;
+}

@@ -1,0 +1,93 @@
+{% extends 'layout.html' %}
+<html lang="en">
+{%block title %}
+   Stripe Payment
+{% endblock %}
+
+{% block css %}
+
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/payment.css' %}">
+    
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <h1>Complete Your Payment</h1>
+        
+
+        <!-- Payment Form -->
+        <form id="payment-form" action="{% url 'process_payment' product_id=product_id %}" method="POST">
+            {% csrf_token %}
+            <div id="payment-element" class="card-element">
+                <!-- Stripe Element will be inserted here -->
+            </div>
+            <button type="button" id="pay" class="pay-button">Pay Now</button>
+            <input type="hidden" id="payment_method_id" name="payment_method_id">
+            <div id="payment-error" class="error-message"></div>
+        </form>
+    </div>
+    
+
+    <script>
+        // Initialize Stripe
+        var stripe = Stripe('{{ stripe_publishable_key }}');
+        const form = document.getElementById('payment-form');
+        const appearance = {
+            theme: 'flat',
+            variables: { colorPrimaryText: '#262626' },
+        };
+
+        const options = {
+            layout: {
+              type: 'accordion',
+              defaultCollapsed: false,
+              radios: false,
+              spacedAccordionItems: true
+            }
+          };
+    
+        // Configure Stripe Elements
+        const elements = stripe.elements({ clientSecret: "{{ client_secret }}", appearance });
+        const paymentElement = elements.create('payment');
+        paymentElement.mount('#payment-element');
+    
+        // Handle form submission
+        document.getElementById('pay').addEventListener('click', async (e) => {
+            e.preventDefault(); // Prevent default form submission behavior
+    
+            try {
+                // Confirm the PaymentIntent
+                const { error, paymentIntent } = await stripe.confirmPayment({
+                    elements,
+                    confirmParams: {
+                        return_url:  window.location.origin + "/payment/1/payment_success/"
+                    },
+                
+                });
+                
+    
+                if (error) {
+                    // Display error to the user
+                    document.getElementById('payment-error').textContent = error.message;
+                    return;
+                }
+    
+                if (paymentIntent && paymentIntent.status === 'succeeded') {
+                    // Populate the hidden input with payment_method_id
+                    document.getElementById('payment_method_id').value = paymentIntent.payment_method;
+                    form.submit(); // Submit the form to the backend
+                } else {
+                    // Handle incomplete payments
+                    document.getElementById('payment-error').textContent = "Payment could not be completed. Please try again.";
+                }
+            } catch (err) {
+                // Handle unexpected errors
+                document.getElementById('payment-error').textContent = "An unexpected error occurred. Please try again.";
+            }
+        });
+    </script>
+
+{% endblock %}
