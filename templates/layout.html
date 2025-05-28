@@ -40,7 +40,17 @@
             </div>
             <div class="my-div">
                  {% if user.is_authenticated %}
-                    <a href="/users/log_out" class="btn login-btn">Logout</a>
+                 <div class="navbar">
+                    <button id="profileButton" class="profile-button">
+                        Profile
+                    </button>
+                </div>
+                <div id="profileBox" class="profile-box">
+                    <p><strong>Name:</strong> {{ user.full_name }}</p>
+                    {% comment %} <a href="{% url 'edit_profile' %}">Edit Profile</a> {% endcomment %}
+                    <a href="/users/log_out">Logout</a>
+                </div>
+                
                 {% else %}
                     <a href="/users/register" class="btn sign-up-btn">Sign Up</a>
                     <a href="/users/log_in" class="btn login-btn">Login</a>
@@ -57,4 +67,22 @@
         {% endblock %}
     </main>
 </body>
+<script>
+    // Get the button and profile box elements
+const profileButton = document.getElementById('profileButton');
+const profileBox = document.getElementById('profileBox');
+
+// Toggle the visibility of the profile box
+profileButton.addEventListener('click', () => {
+    profileBox.style.display = profileBox.style.display === 'block' ? 'none' : 'block';
+});
+
+// Close the profile box when clicking outside it
+document.addEventListener('click', (event) => {
+    if (!profileBox.contains(event.target) && event.target !== profileButton) {
+        profileBox.style.display = 'none';
+    }
+});
+
+</script>
 </html>

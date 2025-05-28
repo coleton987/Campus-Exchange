@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from decouple import config
 
 
 load_dotenv()  # Load environment variables from .env file
@@ -164,6 +165,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
-STRIPE_SECRET_KEY='sk_test_51Q7OQMPA3CySdc96wklNCYkEiP9CNKhqdv1tt6AaEm0n2N2aHgP6Cad3q9zYQpQmeZr73kRKgsMaV0E6m4laRj4Z00KzPFQ2bf'
-STRIPE_PUBLISHABLE_KEY='pk_test_51Q7OQMPA3CySdc96qhq6jhGz6i88NjrHWEzvYv8aQ6lN7ABvtlTyagMTcYKf00c290vIY1m4EP80n6HmWm3OIqwS00GnYJ1ceA'
+SENDGRID_API_KEY = config('SENDGRID_API_KEY')
+
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
 

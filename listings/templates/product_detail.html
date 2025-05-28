@@ -35,7 +35,7 @@
             <p class="product-stock"><strong>Stock:</strong> {{ product.stock }} items available</p>
             
             {% if  product.seller  != request.user%}
-            <a href="/messaging/start_conv?user_id={{ product.seller }}&product_id={{ product.id }}" class="message-button">Message Seller</a>
+            <a href="/messaging/start_conv?user_id={{ product.seller.email }}&product_id={{ product.id }}" class="message-button">Message Seller</a>
             {% endif %}
         </div>
     </div>

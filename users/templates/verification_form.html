@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Verifying email
+{% endblock %}
+
+{% block css %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class='center'>
+    <div class='box'>   
+        <h1 class='cen'>Code sent to your email address</h1>
+        <form class="verification-form" action="/users/verification_form/" method="post">
+            {% csrf_token %}
+            <label for="code">Enter code:</label>
+            <input type="text" id="code" name='code' maxlength="6" pattern="[0-9]{6}" required>
+
+            <button class="form-submit">Submit</button>
+        </form>
+    </div> 
+    </div>
+{% endblock %} 

@@ -6,6 +6,9 @@ from users.models import CustomUser
 from django.urls import reverse
 from django.http import HttpResponseForbidden
 from django.db.models import Q
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+from home import settings
 
 
 @login_required
@@ -17,6 +20,7 @@ def conversation_list(request):
 def conversation_detail(request, conversation_id):
     conversation = get_object_or_404(Conversation, id=conversation_id)
     conversation.display = True
+    other_user = conversation.participants.exclude(id=request.user.id).first().email
     conversation.save()
     if request.user not in conversation.participants.all():
         return HttpResponseForbidden("You are not authorized to view this conversation.")
@@ -24,6 +28,22 @@ def conversation_detail(request, conversation_id):
     if request.method == 'POST':
         text = request.POST.get('text')
         Message.objects.create(conversation=conversation, sender=request.user, text=text)
+
+        print(other_user)
+        messages = Mail(
+            from_email='cmill026@students.bju.edu',
+            to_emails= other_user,
+            subject='Campus Exchange Message',
+            html_content=f'<strong>You have unread messages on Campus Exchange</strong>')
+        try:
+            sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
+            response = sg.send(messages)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+        except Exception as e:
+            print(e.message)
+
         return redirect('conversation_detail', conversation_id=conversation.id)
     return render(request, 'conversation_details.html', {'conversation': conversation})
 
