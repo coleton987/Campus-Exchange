@@ -10,6 +10,9 @@
             Campus Exchange
         {% endblock %}
     </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% block css %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
@@ -17,72 +20,139 @@
     <link rel="icon" href="{% static "img/favicon.png" %}">
 </head>
 <body>
-    <nav>
-        <div class="con">
-            <div class="nav-links">
-                <a href="/">
-                    <span role="img" aria-label="Home">Home</span>
-                </a>| 
-                {% comment %} <a href="/about">
-                    <span role="img" aria-label="About">About</span>
-                </a>| {% endcomment %}
-                {% if user.is_authenticated %}
-                <a href="/listing/products">
-                    <span role="img" aria-label="Listings">Listings</span>
-                </a>|
-                <a href="/listing/add">
-                    <span role="img" aria-label="Add Listing">Add Listing</span>
-                </a>|
-                <a href="/messaging">
-                    <span role="img" aria-label="Your Conversations">Your Conversations</span>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="/" class="brand-link">
+                    <span class="brand-icon">📚</span>
+                    <span class="brand-text">Campus Exchange</span>
                 </a>
+            </div>
+            
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                {% if user.is_authenticated %}
+                <a href="/listing/products" class="nav-link">Browse</a>
+                <a href="/listing/add" class="nav-link">Sell</a>
+                <a href="/messaging" class="nav-link">Messages</a>
                 {% endif %}
             </div>
-            <div class="my-div">
-                 {% if user.is_authenticated %}
-                 <div class="navbar">
+            
+            <div class="nav-actions">
+                {% if user.is_authenticated %}
+                <div class="profile-dropdown">
                     <button id="profileButton" class="profile-button">
-                        Profile
+                        <span class="profile-avatar">{{ user.full_name|first|upper }}</span>
+                        <span class="profile-name">{{ user.full_name|truncatechars:15 }}</span>
+                        <svg class="profile-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                            <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
                     </button>
+                    <div id="profileBox" class="profile-dropdown-menu">
+                        <div class="profile-info">
+                            <div class="profile-avatar-large">{{ user.full_name|first|upper }}</div>
+                            <div>
+                                <div class="profile-name-large">{{ user.full_name }}</div>
+                                <div class="profile-email">{{ user.email }}</div>
+                            </div>
+                        </div>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item">
+                            <span>👤</span> My Profile
+                        </a>
+                        <a href="/listing/products" class="dropdown-item">
+                            <span>📋</span> My Listings
+                        </a>
+                        <a href="/messaging" class="dropdown-item">
+                            <span>💬</span> Messages
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="/users/log_out" class="dropdown-item logout">
+                            <span>🚪</span> Logout
+                        </a>
+                    </div>
                 </div>
-                <div id="profileBox" class="profile-box">
-                    <p><strong>Name:</strong> {{ user.full_name }}</p>
-                    {% comment %} <a href="{% url 'edit_profile' %}">Edit Profile</a> {% endcomment %}
-                    <a href="/users/log_out">Logout</a>
-                </div>
-                
                 {% else %}
-                    <a href="/users/register" class="btn sign-up-btn">Sign Up</a>
-                    <a href="/users/log_in" class="btn login-btn">Login</a>
-                {% endif %} 
+                <div class="auth-buttons">
+                    <a href="/users/log_in" class="btn btn-outline">Login</a>
+                    <a href="/users/register" class="btn btn-primary">Sign Up</a>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Mobile menu button -->
+            <button class="mobile-menu-button" id="mobileMenuButton">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-nav-links">
+                <a href="/" class="mobile-nav-link">Home</a>
+                {% if user.is_authenticated %}
+                <a href="/listing/products" class="mobile-nav-link">Browse</a>
+                <a href="/listing/add" class="mobile-nav-link">Sell</a>
+                <a href="/messaging" class="mobile-nav-link">Messages</a>
+                <a href="/users/log_out" class="mobile-nav-link">Logout</a>
+                {% else %}
+                <a href="/users/log_in" class="mobile-nav-link">Login</a>
+                <a href="/users/register" class="mobile-nav-link">Sign Up</a>
+                {% endif %}
             </div>
         </div>
     </nav>
-    <header class="header-image">
+
+    <header class="header-section">
         {% block header %}
         {% endblock %}
     </header>
-    <main>
+
+    <main class="main-content">
         {% block content %}
         {% endblock %}
     </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="brand-icon">📚</span>
+                <span>Campus Exchange</span>
+            </div>
+            <p>&copy; 2024 Campus Exchange. Made with ❤️ for BJU students.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Profile dropdown functionality
+        const profileButton = document.getElementById('profileButton');
+        const profileBox = document.getElementById('profileBox');
+        
+        if (profileButton && profileBox) {
+            profileButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                profileBox.classList.toggle('show');
+            });
+            
+            document.addEventListener('click', (event) => {
+                if (!profileBox.contains(event.target) && event.target !== profileButton) {
+                    profileBox.classList.remove('show');
+                }
+            });
+        }
+        
+        // Mobile menu functionality
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('show');
+                mobileMenuButton.classList.toggle('active');
+            });
+        }
+    </script>
 </body>
-<script>
-    // Get the button and profile box elements
-const profileButton = document.getElementById('profileButton');
-const profileBox = document.getElementById('profileBox');
-
-// Toggle the visibility of the profile box
-profileButton.addEventListener('click', () => {
-    profileBox.style.display = profileBox.style.display === 'block' ? 'none' : 'block';
-});
-
-// Close the profile box when clicking outside it
-document.addEventListener('click', (event) => {
-    if (!profileBox.contains(event.target) && event.target !== profileButton) {
-        profileBox.style.display = 'none';
-    }
-});
-
-</script>
 </html>

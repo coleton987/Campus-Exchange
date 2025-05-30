@@ -2,63 +2,220 @@
 {% load static %}
 
 {% block title %}
-    Home
+    Campus Exchange - BJU Student Marketplace
 {% endblock %}
 
-{% block header%}
-<div class="image-container">
-    <img src="https://seminary.bju.edu/files/2019/02/20180425front-campus-hc.jpg" alt="Campus" class="img">
-    <h1 class="img-title">Campus Exchange</h1>
+{% block header %}
+<div class="hero-section">
+    <div class="hero-background">
+        <img src="https://seminary.bju.edu/files/2019/02/20180425front-campus-hc.jpg" alt="BJU Campus" class="hero-image">
+        <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1 class="hero-title">
+                <span class="hero-icon">🎓</span>
+                Campus Exchange
+            </h1>
+            <p class="hero-subtitle">Your trusted marketplace for the BJU community</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Active Students</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">1000+</span>
+                    <span class="stat-label">Items Sold</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">BJU Students</span>
+                </div>
+            </div>
+            {% if not user.is_authenticated %}
+            <div class="hero-cta">
+                <a href="/users/register" class="btn btn-hero-primary">
+                    <span>🚀</span> Get Started Free
+                </a>
+                <a href="/listing/products" class="btn btn-hero-secondary">
+                    <span>👀</span> Browse Items
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}
 
 {% block css %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
-
 
 {% block content %}
-     <section class="intro">
-        <h2>Welcome to Campus Exchange!</h2>
-        <p>Your One-Stop Shop for Buying & Selling within the BJU Community</p>
+<div class="home-container">
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="section-header">
+            <h2 class="section-title">Why Choose Campus Exchange?</h2>
+            <p class="section-subtitle">Built by students, for students</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3 class="feature-title">Safe & Trusted</h3>
+                <p class="feature-description">
+                    Exclusive to BJU students with verified .edu email addresses. 
+                    Trade with confidence in your campus community.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3 class="feature-title">Save Money</h3>
+                <p class="feature-description">
+                    Find great deals on textbooks, electronics, furniture, and more. 
+                    Skip the markup and buy directly from students.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3 class="feature-title">Support Peers</h3>
+                <p class="feature-description">
+                    Help fellow Bruins by buying their items and selling yours. 
+                    Keep money within the campus community.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Quick & Easy</h3>
+                <p class="feature-description">
+                    Post listings in minutes and connect with buyers instantly. 
+                    No complicated payment systems or shipping required.
+                </p>
+            </div>
+        </div>
     </section>
 
-    <section class="benefits">
-        <h2>Why Use Campus Exchange?</h2>
-        <ul>
-            <li><strong>Exclusive to Campus Students</strong>: Connect with fellow Bruins in a secure and trusted environment.</li>
-            <li><strong>Buy & Sell Anything</strong>: From textbooks to tech gadgets, find exactly what you need or get rid of what you don't.</li>
-            <li><strong>Support Your Peers</strong>: Keep it local by trading within your community.</li>
-        </ul>
+    <!-- How It Works Section -->
+    <section class="how-it-works-section">
+        <div class="section-header">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Get started in three simple steps</p>
+        </div>
+        
+        <div class="steps-container">
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 class="step-title">Sign Up</h3>
+                    <p class="step-description">
+                        Create your account using your BJU email address. 
+                        Verification keeps our community safe and trusted.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="step-connector"></div>
+            
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 class="step-title">Browse & Post</h3>
+                    <p class="step-description">
+                        Explore listings from fellow students or post your own items. 
+                        Upload photos and set your price in just a few clicks.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="step-connector"></div>
+            
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 class="step-title">Connect & Trade</h3>
+                    <p class="step-description">
+                        Message interested buyers or sellers directly. 
+                        Meet on campus for safe, convenient exchanges.
+                    </p>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section class="get-started">
-        <h2>Get Started Today!</h2>
-        <p><strong>Sign Up</strong>: Create your account using your Campus email to start buying and selling.</p>
-        <p><strong>Browse Listings</strong>: Explore a wide range of products and services posted by your fellow students.</p>
-        <p><strong>Post Your Own Ads</strong>: Have something to sell? Create a listing in just a few clicks!</p>
+    <!-- Popular Categories -->
+    <section class="categories-section">
+        <div class="section-header">
+            <h2 class="section-title">Popular Categories</h2>
+            <p class="section-subtitle">Find exactly what you're looking for</p>
+        </div>
+        
+        <div class="categories-grid">
+            <a href="/listing/products?category=textbooks" class="category-card">
+                <div class="category-icon">📚</div>
+                <h3 class="category-title">Textbooks</h3>
+                <p class="category-count">200+ listings</p>
+            </a>
+            
+            <a href="/listing/products?category=electronics" class="category-card">
+                <div class="category-icon">💻</div>
+                <h3 class="category-title">Electronics</h3>
+                <p class="category-count">150+ listings</p>
+            </a>
+            
+            <a href="/listing/products?category=furniture" class="category-card">
+                <div class="category-icon">🪑</div>
+                <h3 class="category-title">Furniture</h3>
+                <p class="category-count">80+ listings</p>
+            </a>
+            
+            <a href="/listing/products?category=clothing" class="category-card">
+                <div class="category-icon">👕</div>
+                <h3 class="category-title">Clothing</h3>
+                <p class="category-count">120+ listings</p>
+            </a>
+        </div>
     </section>
 
-    <section class="community">
-        <h2>Join the Campus Exchange Community</h2>
-        <p>Start exploring today and experience the convenience of buying and selling within the Campus community. Let’s keep it all in the family, Bruins!</p>
+    <!-- CTA Section -->
+    {% if user.is_authenticated %}
+    <section class="cta-section authenticated">
+        <div class="cta-content">
+            <h2 class="cta-title">Welcome back, {{ user.full_name|title }}!</h2>
+            <p class="cta-subtitle">Ready to find your next great deal or sell something?</p>
+            <div class="cta-buttons">
+                <a href="/listing/products" class="btn btn-primary">
+                    <span>🔍</span> Browse Listings
+                </a>
+                <a href="/listing/add" class="btn btn-success">
+                    <span>➕</span> Post New Listing
+                </a>
+            </div>
+        </div>
     </section>
-{% if user.is_authenticated %}
-    <a href="/users/log_out" class="btn login-btn">Logout</a>
-{% else %}
-    <a href="/users/register" class="btn sign-up-btn">Sign Up</a>
-    <a href="/users/log_in" class="btn login-btn">Login</a>
-{% endif %} 
-</main>
-
-<footer>
-    <p>&copy; 2024 Campus Exchange. All rights reserved.</p>
-</footer>
-                
+    {% else %}
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">Ready to Join Campus Exchange?</h2>
+            <p class="cta-subtitle">
+                Join hundreds of BJU students already saving money and supporting each other.
+            </p>
+            <div class="cta-buttons">
+                <a href="/users/register" class="btn btn-primary">
+                    <span>🚀</span> Sign Up Free
+                </a>
+                <a href="/users/log_in" class="btn btn-outline">
+                    <span>👋</span> Login
+                </a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+</div>
 {% endblock %}
-
-
-
-
-
