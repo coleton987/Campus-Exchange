@@ -1,158 +1,134 @@
 {% extends 'layout.html' %}
 {% load static %}
 
-{% block title %}
-    About Campus Exchange - BJU Student Marketplace
-{% endblock %}
-
-{% block header %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
-{% endblock %}
+{% block title %}About - Campus Exchange{% endblock %}
 
 {% block css %}
-{% load static %}
 <link rel="stylesheet" href="{% static 'css/about.css' %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-    <div class="about-container">
-        <!-- Hero Section -->
-        <section class="about-hero">
-            <h1>About Campus Exchange</h1>
-            <p>Your trusted, secure marketplace exclusively for Bob Jones University students. Buy, sell, and connect with your campus community safely and easily.</p>
-        </section>
-
-        <!-- Mission Statement -->
-        <section class="mission-statement">
-            <h2>Our Mission</h2>
-            <p>"To create a safe, trusted marketplace where BJU students can easily buy and sell items within their campus community, fostering connections and helping students save money while maintaining the highest standards of security and integrity."</p>
-        </section>
-
-        <!-- What We Do Section -->
-        <section class="about-section">
-            <h2>What We Do</h2>
-            <p>Campus Exchange is a private, university-exclusive marketplace designed specifically for Bob Jones University students. Unlike public platforms like Facebook Marketplace or Craigslist, we provide a secure environment where you know exactly who you're dealing with - fellow BJU students.</p>
-            <p>Whether you're looking to sell textbooks after a semester, find affordable dorm furniture, or trade electronics, Campus Exchange makes it simple and safe to connect with buyers and sellers in your campus community.</p>
-        </section>
-
-        <!-- Features Grid -->
-        <section class="about-section">
-            <h2>Why Choose Campus Exchange?</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3>Student-Only Access</h3>
-                    <p>Exclusive to BJU students with verified .edu email addresses. Trade with people you can trust in your campus community.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💰</div>
-                    <h3>No Transaction Fees</h3>
-                    <p>Keep more money in your pocket. We don't charge fees for listings or sales - just simple, direct transactions between students.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Mobile-Friendly</h3>
-                    <p>Designed to work perfectly on your phone, tablet, or laptop. List items and browse seamlessly from any device.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Easy & Fast</h3>
-                    <p>Simple listing process with photo uploads. Find what you need quickly with search and category filters.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🤝</div>
-                    <h3>In-Person Meetings</h3>
-                    <p>Safe, campus-based meetups. No risky online payments or shipping - meet face-to-face on campus grounds.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📚</div>
-                    <h3>Perfect for Students</h3>
-                    <p>Ideal for textbooks, electronics, furniture, clothing, and everything else students need to buy and sell.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- How It Works -->
-        <section class="about-section how-it-works">
-            <h2>How It Works</h2>
-            <div class="steps-container">
-                <div class="step-item">
-                    <div class="step-number">1</div>
-                    <h3>Sign Up</h3>
-                    <p>Create your account with your BJU email address. We verify all users to ensure campus-only access.</p>
-                </div>
-                <div class="step-item">
-                    <div class="step-number">2</div>
-                    <h3>List Items</h3>
-                    <p>Upload photos and details of items you want to sell. Set your price and provide a clear description.</p>
-                </div>
-                <div class="step-item">
-                    <div class="step-number">3</div>
-                    <h3>Connect</h3>
-                    <p>Interested buyers will message you directly through our secure messaging system to arrange details.</p>
-                </div>
-                <div class="step-item">
-                    <div class="step-number">4</div>
-                    <h3>Meet & Trade</h3>
-                    <p>Meet on campus in a safe, public location to complete your transaction. Cash only, no online payments needed.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Stats Section -->
-        <section class="about-section">
-            <h2>Growing Community</h2>
-            <div class="stats-section">
-                <div class="stat-item">
-                    <div class="stat-number">500+</div>
-                    <div class="stat-label">Active Students</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">1,200+</div>
-                    <div class="stat-label">Items Listed</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">850+</div>
-                    <div class="stat-label">Successful Trades</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">$15K+</div>
-                    <div class="stat-label">Student Savings</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Safety Section -->
-        <section class="about-section">
-            <h2>Your Safety Matters</h2>
-            <p>We prioritize student safety above all else. All users must verify their BJU email address, and we encourage all meetings to take place in public, well-lit areas on campus. Our community guidelines ensure respectful interactions, and we have reporting mechanisms for any inappropriate behavior.</p>
-            <p><strong>Safety Tips:</strong></p>
-            <ul style="margin-left: 2rem; color: #555; line-height: 1.7;">
-                <li>Always meet in public campus locations</li>
-                <li>Bring a friend if you feel more comfortable</li>
-                <li>Inspect items carefully before purchasing</li>
-                <li>Trust your instincts - if something feels off, don't proceed</li>
-                <li>Report any suspicious or inappropriate behavior immediately</li>
-            </ul>
-        </section>
-
-        <!-- Contact Section -->
-        <section class="contact-section">
-            <h2>Get Started Today</h2>
-            <p>Join hundreds of BJU students who are already saving money and decluttering their dorms through Campus Exchange. Start buying and selling with your campus community today!</p>
-            <a href="/register" class="contact-button">Sign Up Now</a>
-            <a href="/listings" class="contact-button">Browse Items</a>
-        </section>
-
-        <!-- Footer Info -->
-        <section class="about-section" style="text-align: center; padding-top: 2rem; border-top: 1px solid #eee;">
-            <p style="color: #666; font-size: 0.9rem;">
-                Campus Exchange is an independent student project created for the BJU community. 
-                <br>For questions or support, contact us through our help center.
-            </p>
-        </section>
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>About Campus Exchange</h1>
+        <p class="hero-subtitle">Your trusted campus marketplace for Bob Jones University students</p>
     </div>
+</section>
+
+<!-- Mission Section -->
+<section class="mission">
+    <div class="content-wrapper">
+        <h2>Our Mission</h2>
+        <p>Campus Exchange provides a secure, private marketplace exclusively for Bob Jones University students. We're here to help you buy and sell textbooks, electronics, furniture, and other items safely within your campus community.</p>
+    </div>
+</section>
+
+<!-- How It Works Section - Redesigned -->
+<section class="how-it-works">
+    <div class="content-wrapper">
+        <h2>How It Works</h2>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <div class="step-content">
+                    <h3>1. Sign Up</h3>
+                    <p>Create your account using your @bju.edu email address. This ensures only BJU students can access the marketplace.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <div class="step-content">
+                    <h3>2. List Your Items</h3>
+                    <p>Upload photos and descriptions of items you want to sell. Set your price and add any relevant details.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="step-content">
+                    <h3>3. Browse & Search</h3>
+                    <p>Find what you need using our search and filter options. Browse by category, price range, or keywords.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="step-content">
+                    <h3>4. Connect</h3>
+                    <p>Message sellers directly through our secure in-app messaging system to ask questions and arrange meetups.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <div class="step-content">
+                    <h3>5. Meet & Exchange</h3>
+                    <p>Meet in person on campus to complete your transaction safely. Cash or item exchanges only - no online payments needed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+    <div class="content-wrapper">
+        <h2>Why Choose Campus Exchange?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Safe & Secure</h3>
+                <p>Restricted to BJU students with verified email addresses</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Mobile Friendly</h3>
+                <p>Optimized for use on your phone, tablet, or desktop</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <h3>No Fees</h3>
+                <p>Completely free to use - no hidden charges or transaction fees</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Campus Community</h3>
+                <p>Connect with fellow students you can trust</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta">
+    <div class="content-wrapper">
+        <h2>Ready to Get Started?</h2>
+        <p>Join hundreds of BJU students already using Campus Exchange</p>
+        <div class="cta-buttons">
+            <a href="/users/register" class="btn btn-primary">Sign Up Now</a>
+            <a href="/listing/products" class="btn btn-secondary">Browse Listings</a>
+        </div>
+    </div>
+</section>
 {% endblock %}
