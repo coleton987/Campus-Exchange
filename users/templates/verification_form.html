@@ -1,26 +1,61 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    Verifying email
+    Email Verification - Campus Exchange
 {% endblock %}
 
 {% block css %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/users.css' %}">
+    <link rel="stylesheet" href="{% static 'css/verification.css' %}">
 {% endblock %}
 
 {% block content %}
-
-    <div class='center'>
-    <div class='box'>   
-        <h1 class='cen'>Code sent to your email address</h1>
+<div class="verification-container">
+    <div class="verification-card">
+        <div class="verification-header">
+            <div class="verification-icon">📧</div>
+            <h1 class="verification-title">Check Your Email</h1>
+            <p class="verification-subtitle">
+                We've sent a 6-digit verification code to your BJU email address.
+                Enter it below to complete your registration.
+            </p>
+        </div>
+        
         <form class="verification-form" action="/users/verification_form/" method="post">
             {% csrf_token %}
-            <label for="code">Enter code:</label>
-            <input type="text" id="code" name='code' maxlength="6" pattern="[0-9]{6}" required>
+            
+            <div class="form-group">
+                <label for="code" class="form-label">Verification Code</label>
+                <input 
+                    type="text" 
+                    id="code" 
+                    name="code" 
+                    class="form-input code-input" 
+                    maxlength="6" 
+                    pattern="[0-9]{6}" 
+                    placeholder="000000"
+                    required
+                    autocomplete="one-time-code"
+                >
+                <p class="form-hint">Enter the 6-digit code from your email</p>
+            </div>
 
-            <button class="form-submit">Submit</button>
+            <button type="submit" class="btn btn-primary btn-full">
+                <span>✅</span>
+                Verify Email
+            </button>
         </form>
-    </div> 
+
+        <div class="verification-footer">
+            <p class="help-text">
+                Didn't receive the code? 
+                <a href="#" class="resend-link">Resend verification email</a>
+            </p>
+            <p class="help-text">
+                Having trouble? 
+                <a href="mailto:support@campusexchange.com" class="support-link">Contact support</a>
+            </p>
+        </div>
     </div>
-{% endblock %} 
+</div>
+{% endblock %}

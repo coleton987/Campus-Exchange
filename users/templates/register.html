@@ -1,24 +1,65 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    Register a New User
+    Join Campus Exchange - Register
 {% endblock %}
 
 {% block css %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/users.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
 {% endblock %}
 
 {% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-icon">🎓</div>
+            <h1 class="auth-title">Join Campus Exchange</h1>
+            <p class="auth-subtitle">Create your account to start buying and selling with fellow BJU students</p>
+        </div>
+        
+        <div class="auth-benefits">
+            <div class="benefit-item">
+                <span class="benefit-icon">✓</span>
+                <span class="benefit-text">Safe & secure BJU-only community</span>
+            </div>
+            <div class="benefit-item">
+                <span class="benefit-icon">✓</span>
+                <span class="benefit-text">Buy and sell with trusted classmates</span>
+            </div>
+            <div class="benefit-item">
+                <span class="benefit-icon">✓</span>
+                <span class="benefit-text">Free to join and use</span>
+            </div>
+        </div>
 
-    <div class='center'>
-    <div class='box'>   
-        <h1 class='cen'>Register a New User</h1>
-        <form class="form-with-validation" action="/users/register/" method="post">
+        <form class="auth-form" action="/users/register/" method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button class="form-submit">Submit</button>
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="auth-submit-btn">
+                <span class="btn-icon">🚀</span>
+                Create Account
+            </button>
         </form>
-    </div> 
+
+        <div class="auth-footer">
+            <p class="auth-switch">
+                Already have an account? 
+                <a href="/users/log_in" class="auth-link">Sign in here</a>
+            </p>
+        </div>
+
+        <div class="auth-security">
+            <div class="security-badge">
+                <span class="security-icon">🛡️</span>
+                <div class="security-text">
+                    <strong>Secure Registration</strong>
+                    <small>Your information is protected and only shared with verified BJU students</small>
+                </div>
+            </div>
+        </div>
     </div>
-{% endblock %} 
+</div>
+{% endblock %}
