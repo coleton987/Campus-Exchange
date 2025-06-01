@@ -2,46 +2,168 @@
 {% load static %}
 
 {% block title %}
-    Product List
+    Browse Listings - Campus Exchange
 {% endblock %}
 
 {% block css %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/listings.css' %}">
+<link rel="stylesheet" href="{% static 'css/list.css' %}">
+{% endblock %}
+
+{% block header %}
+<div class="listings-hero">
+    <div class="listings-hero-content">
+        <h1 class="listings-hero-title">
+            <span class="listings-hero-icon">🛍️</span>
+            Browse Campus Listings
+        </h1>
+        <p class="listings-hero-subtitle">
+            Discover great deals from your fellow BJU students
+        </p>
+        <div class="listings-hero-stats">
+            <div class="stat-item">
+                <span class="stat-number">{{ products|length }}</span>
+                <span class="stat-label">Active Listings</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">Verified Students</span>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block content %}
-<h1>Listings</h1>
-
-<div class="product-grid">
-    {% for product in products %}
-    <a href="{% url 'product_details' product.id %}">
-        <div class="product-card">
-            <!-- Check if the product has any images -->
-            {% if product.images.all %}
-                <!-- Loop through all images related to the product and display the first one -->
-                <img src="{{ product.images.all.0.image.url }}" alt="{{ product.name }}" class="product-image" width='250' length='300'>
-            {% else %}
-                <!-- Fallback if there are no images -->
-                <img src="{% static 'placeholder.jpg' %}" alt="No image available" class="product-image">
-            {% endif %}
-            
-            <div class="product-info">
-                <h2 class="product-title">{{ product.name }}</h2>
-                <p class="product-description"><strong>Description:</strong> 
-                    {% if product.description|length > 20 %}
-                        {{ product.description|slice:":20" }}...
-                    {% else %}
-                        {{ product.description }}
-                    {% endif %}
-                </p>
-                <p class="product-price"><strong>Price:</strong> ${{ product.price }}</p>
-                {% comment %} <p class="product-stock"><strong>Stock:</strong> {{ product.stock }} items available</p> {% endcomment %}
-                <p class="product-updated"><strong></strong> {{ product.updated_at }}</p>
+<div class="listings-container">
+    <!-- Filters Section -->
+    <section class="filters-section">
+        <div class="filters-header">
+            <h2 class="filters-title">Find What You Need</h2>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Search</label>
+                    <input type="text" class="filter-input" placeholder="Search items...">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Category</label>
+                    <select class="filter-select">
+                        <option value="">All Categories</option>
+                        <option value="textbooks">📚 Textbooks</option>
+                        <option value="electronics">💻 Electronics</option>
+                        <option value="furniture">🪑 Furniture</option>
+                        <option value="clothing">👕 Clothing</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Price Range</label>
+                    <select class="filter-select">
+                        <option value="">Any Price</option>
+                        <option value="0-25">$0 - $25</option>
+                        <option value="25-50">$25 - $50</option>
+                        <option value="50-100">$50 - $100</option>
+                        <option value="100+">$100+</option>
+                    </select>
+                </div>
             </div>
-            
         </div>
-    </a>
-    {% endfor %}
+    </section>
+
+    <!-- Products Grid Section -->
+    <section class="products-section">
+        <div class="products-header">
+            <div class="products-count">
+                <span class="count-number">{{ products|length }}</span>
+                <span class="count-text">items found</span>
+            </div>
+            <div class="sort-options">
+                <select class="sort-select">
+                    <option value="newest">Newest First</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="name">Name A-Z</option>
+                </select>
+            </div>
+        </div>
+
+        {% if products %}
+        <div class="products-grid">
+            {% for product in products %}
+            <a href="{% url 'product_details' product.id %}" class="product-card">
+                <div class="product-image-container">
+                    {% if product.images.all %}
+                        <img src="{{ product.images.all.0.image.url }}" alt="{{ product.name }}" class="product-image">
+                    {% else %}
+                        <div class="product-image-placeholder">
+                            <span class="placeholder-icon">📷</span>
+                            <span class="placeholder-text">No Image</span>
+                        </div>
+                    {% endif %}
+                    <div class="product-badge">
+                        <span class="badge-icon">✨</span>
+                        New
+                    </div>
+                </div>
+                
+                <div class="product-info">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                    <p class="product-description">
+                        {% if product.description|length > 60 %}
+                            {{ product.description|slice:":60" }}...
+                        {% else %}
+                            {{ product.description }}
+                        {% endif %}
+                    </p>
+                    
+                    <div class="product-footer">
+                        <div class="product-price">
+                            <span class="price-currency">$</span>
+                            <span class="price-amount">{{ product.price }}</span>
+                        </div>
+                        <div class="product-meta">
+                            <span class="product-date">{{ product.updated_at|date:"M d" }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-hover-overlay">
+                    <div class="hover-content">
+                        <span class="hover-icon">👁️</span>
+                        <span class="hover-text">View Details</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h3 class="empty-title">No listings found</h3>
+            <p class="empty-description">
+                Be the first to post an item or try adjusting your filters.
+            </p>
+            <a href="/listing/add" class="btn btn-primary">
+                <span>➕</span> Post Your First Item
+            </a>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- Quick Actions Section -->
+    <section class="quick-actions-section">
+        <div class="quick-actions-content">
+            <h3 class="quick-actions-title">Can't find what you're looking for?</h3>
+            <p class="quick-actions-subtitle">Post your own listing or browse by category</p>
+            <div class="quick-actions-buttons">
+                <a href="/listing/add" class="btn btn-primary">
+                    <span>➕</span> Post New Listing
+                </a>
+                <a href="/" class="btn btn-outline">
+                    <span>🏠</span> Back to Home
+                </a>
+            </div>
+        </div>
+    </section>
 </div>
 {% endblock %}

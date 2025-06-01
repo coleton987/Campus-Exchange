@@ -1,70 +1,251 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    {{ product.name }} Details
+    {{ product.name }} - Campus Exchange
 {% endblock %}
 
 {% block css %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/listings.css' %}">
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="product-detail">
-    <div class="product-detail-container">
-        <div class="product-images">
-            <!-- Carousel Container -->
-            <div class="carousel-container">
-                <button class="carousel-button prev-button" onclick="prevImage()">&#10094;</button>
+<div class="product-detail-container">
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumb-nav">
+        <div class="breadcrumb-container">
+            <a href="/" class="breadcrumb-link">
+                <span>🏠</span> Home
+            </a>
+            <span class="breadcrumb-divider">›</span>
+            <a href="/listing/products" class="breadcrumb-link">Browse</a>
+            <span class="breadcrumb-divider">›</span>
+            <span class="breadcrumb-current">{{ product.name|truncatechars:30 }}</span>
+        </div>
+    </nav>
 
-                <div class="carousel-images">
+    <!-- Main Product Section -->
+    <div class="product-main-section">
+        <!-- Product Images Section -->
+        <div class="product-images-section">
+            <div class="product-carousel">
+                <div class="carousel-container">
+                    <button class="carousel-button prev-button" onclick="prevImage()" aria-label="Previous image">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <div class="carousel-images">
+                        {% for image in product.images.all %}
+                            <img src="{{ image.image.url }}" alt="{{ product.name }}" class="carousel-image">
+                        {% empty %}
+                            <div class="no-image-placeholder">
+                                <span class="no-image-icon">📷</span>
+                                <p>No images available</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <button class="carousel-button next-button" onclick="nextImage()" aria-label="Next image">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Image indicators -->
+                {% if product.images.all|length > 1 %}
+                <div class="carousel-indicators">
                     {% for image in product.images.all %}
-                        <img src="{{ image.image.url }}" alt="{{ product.name }}" class="carousel-image">
+                        <button class="indicator-dot" onclick="showImage({{ forloop.counter0 }})" data-index="{{ forloop.counter0 }}"></button>
                     {% endfor %}
                 </div>
-                
-                
-                <button class="carousel-button next-button" onclick="nextImage()">&#10095;</button>
-                
+                {% endif %}
             </div>
         </div>
-        <div class="product-info">
-            <h1>{{ product.name }}</h1>
-            <p class="product-price"><strong>Price:</strong> ${{ product.price }}</p>
-            <p class="product-description"><strong>Description:</strong> {{ product.description }}</p>
-            <p class="product-stock"><strong>Stock:</strong> {{ product.stock }} items available</p>
-            
-            {% if  product.seller  != request.user%}
-            <a href="/messaging/start_conv?user_id={{ product.seller.email }}&product_id={{ product.id }}" class="message-button">Message Seller</a>
-            {% endif %}
+
+        <!-- Product Information Section -->
+        <div class="product-info-section">
+            <div class="product-header">
+                <h1 class="product-title">{{ product.name }}</h1>
+                <div class="product-meta">
+                    <span class="product-category">📂 {{ product.category|default:"General" }}</span>
+                    <span class="product-date">🕒 Listed {{ product.created_at|timesince }} ago</span>
+                </div>
+            </div>
+
+            <div class="product-price-section">
+                <div class="price-display">
+                    <span class="currency">$</span>
+                    <span class="price-amount">{{ product.price }}</span>
+                </div>
+                <div class="stock-info">
+                    {% if product.stock > 5 %}
+                        <span class="stock-badge stock-available">✅ {{ product.stock }} available</span>
+                    {% elif product.stock > 0 %}
+                        <span class="stock-badge stock-limited">⚠️ Only {{ product.stock }} left</span>
+                    {% else %}
+                        <span class="stock-badge stock-out">❌ Out of stock</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="product-description-section">
+                <h3 class="section-title">📝 Description</h3>
+                <div class="description-content">
+                    {{ product.description|linebreaks }}
+                </div>
+            </div>
+
+            <!-- Seller Information -->
+            <div class="seller-info-section">
+                <h3 class="section-title">👤 Seller Information</h3>
+                <div class="seller-card">
+                    <div class="seller-avatar">
+                        {{ product.seller.full_name|first|upper }}
+                    </div>
+                    <div class="seller-details">
+                        <div class="seller-name">{{ product.seller.full_name }}</div>
+                        <div class="seller-email">{{ product.seller.email }}</div>
+                        <div class="seller-badge">✅ Verified BJU Student</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="product-actions">
+                {% if product.seller != request.user %}
+                    {% if product.stock > 0 %}
+                        <a href="/messaging/start_conv?user_id={{ product.seller.email }}&product_id={{ product.id }}" class="btn btn-primary btn-large">
+                            <span>💬</span> Message Seller
+                        </a>
+                        <button class="btn btn-outline btn-large" onclick="shareProduct()">
+                            <span>📤</span> Share
+                        </button>
+                    {% else %}
+                        <button class="btn btn-disabled btn-large" disabled>
+                            <span>❌</span> Out of Stock
+                        </button>
+                    {% endif %}
+                {% else %}
+                    <div class="owner-actions">
+                        <span class="owner-badge">👑 This is your listing</span>
+                        <div class="owner-buttons">
+                            <a href="/listing/edit/{{ product.id }}" class="btn btn-success">
+                                <span>✏️</span> Edit Listing
+                            </a>
+                            <button class="btn btn-outline" onclick="shareProduct()">
+                                <span>📤</span> Share
+                            </button>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Safety Tips -->
+            <div class="safety-tips-section">
+                <h4 class="safety-title">🛡️ Safety Tips</h4>
+                <ul class="safety-list">
+                    <li>Meet in public places on campus</li>
+                    <li>Inspect items before purchasing</li>
+                    <li>Use campus messaging for communication</li>
+                    <li>Report suspicious activity</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Items Section -->
+    <div class="related-items-section">
+        <div class="section-header">
+            <h2 class="section-title">🔍 Similar Items</h2>
+            <p class="section-subtitle">You might also be interested in these</p>
+        </div>
+        
+        <div class="related-items-grid">
+            <!-- This would be populated by similar items from the same category -->
+            <div class="related-item-placeholder">
+                <div class="placeholder-icon">🔍</div>
+                <p>More items coming soon!</p>
+            </div>
         </div>
     </div>
 </div>
-<!-- Include JavaScript at the bottom of the page for better performance -->
+
 <script>
 let currentImageIndex = 0;
 const images = document.querySelectorAll('.carousel-image');
+const indicators = document.querySelectorAll('.indicator-dot');
 
-function showImage(index) {
-    images.forEach((img, i) => {
-        img.classList.remove('active');
-        if (i === index) {
-            img.classList.add('active');
-        }
+function updateIndicators() {
+    indicators.forEach((indicator, index) => {
+        indicator.classList.toggle('active', index === currentImageIndex);
     });
 }
 
+function showImage(index) {
+    // Hide all images
+    images.forEach(img => img.classList.remove('active'));
+    
+    // Show the selected image
+    if (images[index]) {
+        images[index].classList.add('active');
+        currentImageIndex = index;
+        updateIndicators();
+    }
+}
+
 function nextImage() {
-    currentImageIndex = (currentImageIndex + 1) % images.length;
-    showImage(currentImageIndex);
+    if (images.length > 0) {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        showImage(currentImageIndex);
+    }
 }
 
 function prevImage() {
-    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-    showImage(currentImageIndex);
+    if (images.length > 0) {
+        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        showImage(currentImageIndex);
+    }
 }
 
-// Initially show the first image
-showImage(currentImageIndex);
+function shareProduct() {
+    if (navigator.share) {
+        navigator.share({
+            title: '{{ product.name }} - Campus Exchange',
+            text: 'Check out this item on Campus Exchange!',
+            url: window.location.href
+        });
+    } else {
+        // Fallback: copy to clipboard
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            alert('Link copied to clipboard!');
+        });
+    }
+}
+
+// Initialize carousel
+document.addEventListener('DOMContentLoaded', function() {
+    if (images.length > 0) {
+        showImage(0);
+        
+        // Auto-play carousel (optional)
+        if (images.length > 1) {
+            setInterval(() => {
+                nextImage();
+            }, 5000); // Change image every 5 seconds
+        }
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') {
+            prevImage();
+        } else if (e.key === 'ArrowRight') {
+            nextImage();
+        }
+    });
+});
 </script>
 {% endblock %}
