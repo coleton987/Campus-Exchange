@@ -2,50 +2,163 @@
 {% load static %}
 
 {% block title %}
-    Add Product
+    Sell Your Items - Campus Exchange
 {% endblock %}
 
 {% block css %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/listings.css' %}">
+<link rel="stylesheet" href="{% static 'css/add.css' %}">
+{% endblock %}
+
+{% block header %}
+<div class="page-header">
+    <div class="header-background">
+        <div class="header-overlay"></div>
+    </div>
+    <div class="header-content">
+        <h1 class="header-title">
+            <span class="header-icon">💰</span>
+            Sell Your Items
+        </h1>
+        <p class="header-subtitle">Turn your unused items into cash with fellow BJU students</p>
+    </div>
+</div>
 {% endblock %}
 
 {% block content %}
-<h1>Add a New Product</h1>
-
-<!-- Product Form -->
-<form id="productForm" method="post">
-    {% csrf_token %}
-
-    <!-- Render specific form fields manually -->
-    <div class="form-group">
-        {{ product_form.name.label_tag }}
-        {{ product_form.name }}
-    </div>
-    <div class="form-group-desc">
-        {{ product_form.description.label_tag }}
-        {{ product_form.description }}
-    </div>
-    <!-- Wrap price and stock fields in a container -->
-    <div class="price-stock-group">
-        <div class="form-group">
-            {{ product_form.price.label_tag }}
-            {{ product_form.price }}
+<div class="add-container">
+    <div class="form-wrapper">
+        <div class="form-header">
+            <h2 class="form-title">Create Your Listing</h2>
+            <p class="form-subtitle">Fill out the details below to get your item in front of buyers</p>
         </div>
-        <div class="form-group">
-            {{ product_form.stock.label_tag }}
-            {{ product_form.stock }}
-        </div>
+
+        <form id="productForm" method="post" class="product-form">
+            {% csrf_token %}
+
+            <div class="form-section">
+                <h3 class="section-title">
+                    <span class="section-icon">📝</span>
+                    Basic Information
+                </h3>
+                
+                <div class="form-group">
+                    <label for="{{ product_form.name.id_for_label }}" class="form-label">
+                        Item Name
+                        <span class="required">*</span>
+                    </label>
+                    {{ product_form.name }}
+                    <div class="form-help">Give your item a clear, descriptive name</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ product_form.description.id_for_label }}" class="form-label">
+                        Description
+                        <span class="required">*</span>
+                    </label>
+                    {{ product_form.description }}
+                    <div class="form-help">Describe the condition, features, and any important details</div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">
+                    <span class="section-icon">💵</span>
+                    Pricing & Availability
+                </h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ product_form.price.id_for_label }}" class="form-label">
+                            Price ($)
+                            <span class="required">*</span>
+                        </label>
+                        {{ product_form.price }}
+                        <div class="form-help">Set a competitive price</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ product_form.stock.id_for_label }}" class="form-label">
+                            Quantity Available
+                            <span class="required">*</span>
+                        </label>
+                        {{ product_form.stock }}
+                        <div class="form-help">How many do you have?</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">
+                    <span class="section-icon">📸</span>
+                    Photos
+                </h3>
+                <p class="section-description">Add up to 6 high-quality photos to showcase your item</p>
+                
+                <div class="upload-zone" id="my-awesome-dropzone">
+                    <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <h4 class="upload-title">Drag & Drop Photos Here</h4>
+                        <p class="upload-subtitle">or click to browse</p>
+                        <div class="upload-specs">
+                            <span class="spec-item">Up to 6 photos</span>
+                            <span class="spec-divider">•</span>
+                            <span class="spec-item">Max 5MB each</span>
+                            <span class="spec-divider">•</span>
+                            <span class="spec-item">JPG, PNG</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                    <span>←</span> Cancel
+                </button>
+                <button type="submit" id="submit-product-btn" class="btn btn-primary">
+                    <span>🚀</span> List My Item
+                </button>
+            </div>
+        </form>
     </div>
 
-    <div class="dropzone" id="my-awesome-dropzone"></div>
-    
-    <button type="submit" id="submit-product-btn">Add Product</button>
-</form>
+    <div class="tips-sidebar">
+        <div class="tips-card">
+            <h3 class="tips-title">
+                <span class="tips-icon">💡</span>
+                Selling Tips
+            </h3>
+            <ul class="tips-list">
+                <li class="tip-item">
+                    <strong>Take great photos:</strong> Use natural lighting and show different angles
+                </li>
+                <li class="tip-item">
+                    <strong>Be honest:</strong> Accurately describe condition and any flaws
+                </li>
+                <li class="tip-item">
+                    <strong>Price fairly:</strong> Research similar items to set competitive prices
+                </li>
+                <li class="tip-item">
+                    <strong>Respond quickly:</strong> Fast replies lead to faster sales
+                </li>
+                <li class="tip-item">
+                    <strong>Meet safely:</strong> Use public campus locations for exchanges
+                </li>
+            </ul>
+        </div>
 
-
-
-
+        <div class="safety-card">
+            <h3 class="safety-title">
+                <span class="safety-icon">🛡️</span>
+                Safety First
+            </h3>
+            <p class="safety-text">
+                Campus Exchange is for BJU students only. Always meet in public campus locations 
+                and trust your instincts when dealing with buyers.
+            </p>
+        </div>
+    </div>
+</div>
 
 <!-- Dropzone.js CSS from CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css" />
@@ -53,32 +166,29 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
 
 <script>
-    
 Dropzone.autoDiscover = false;
 
-var csrftoken = "{{ csrf_token }}";  // Pass the CSRF token from Django to JavaScript
-//var productId = null;  // Store product ID once created
+var csrftoken = "{{ csrf_token }}";
+var productId = null;
 
 // Initialize Dropzone for image uploads
 var myDropzone = new Dropzone("#my-awesome-dropzone", {
-    url: "{% url 'file_upload' %}",  // URL to upload files
+    url: "{% url 'file_upload' %}",
     paramName: "file",
-    maxFilesize: 5,  // MB
-    parallelUploads: 6,  // Upload 6 files at a time
-    maxFiles: 6,  // Maximum 6 files
+    maxFilesize: 5,
+    parallelUploads: 6,
+    maxFiles: 6,
     acceptedFiles: "image/*",
-    autoProcessQueue: false,  // Disable automatic processing
+    autoProcessQueue: false,
     addRemoveLinks: true, 
     headers: {
         "X-CSRFToken": csrftoken
     },
     init: function() {
         this.on("sending", function(file, xhr, formData) {
-            // Append the product_id to the form data
             formData.append("product_id", productId);
         });
         this.on("queuecomplete", function() {
-            // After all images are uploaded, redirect to the product list
             window.location.href = "{% url 'product_list' %}";
         });
         this.on("error", function(file, response) {
@@ -86,14 +196,13 @@ var myDropzone = new Dropzone("#my-awesome-dropzone", {
         });
     }
 });
-document.getElementById("submit-product-btn").addEventListener("click", function(event) {
-    event.preventDefault();  // Prevent default form submission
 
-    // Capture form data
+document.getElementById("submit-product-btn").addEventListener("click", function(event) {
+    event.preventDefault();
+
     var form = document.getElementById("productForm");
     var formData = new FormData(form);
 
-    // Send form data to the server using Fetch API
     fetch("{% url 'add_product' %}", {
         method: "POST",
         headers: {
@@ -101,18 +210,15 @@ document.getElementById("submit-product-btn").addEventListener("click", function
         },
         body: formData
     })
-    .then(response => response.json())  // Expect JSON response
+    .then(response => response.json())
     .then(data => {
         if (data.product_id) {
-            // Set the productId for future use
             productId = data.product_id;
             
-            // Now process the Dropzone queue
             if (myDropzone.getQueuedFiles().length > 0) {
-                myDropzone.processQueue();  // Upload files in Dropzone
+                myDropzone.processQueue();
             } else {
                 console.log("No files to upload.");
-                // Optionally redirect if no files to upload
                 window.location.href = "{% url 'product_list' %}";
             }
         } else {
@@ -121,9 +227,5 @@ document.getElementById("submit-product-btn").addEventListener("click", function
     })
     .catch(error => console.error("Error:", error));
 });
-
-
-
 </script>
-
 {% endblock %}
