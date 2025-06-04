@@ -199,3 +199,44 @@ def update_photo_order(request):
         
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
+    
+def delete_listing(request, id):
+   
+    if request.method == 'POST':
+        try:
+            # Get the product and ensure the user owns it
+            product = get_object_or_404(Product, id=id)
+            
+            # Optional: Add permission check
+            if hasattr(product, 'seller') and product.seller != request.user:
+                return JsonResponse({
+                    'success': False, 
+                    'error': 'Permission denied'
+                }, status=403)
+            
+            # Delete all associated images first (they'll be automatically deleted due to CASCADE)
+            product_name = product.name  # Store name for success message
+            
+            # Delete the product (this will also delete associated ProductImage instances)
+            product.delete()
+            
+            # Return success response
+            return JsonResponse({
+                'success': True,
+                'message': f'"{product_name}" has been deleted successfully',
+                'redirect_url': '/listing/products/'  # Redirect to product list
+            })
+            
+        except Product.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'error': 'Product not found'
+            }, status=404)
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': f'Error deleting product: {str(e)}'
+            }, status=500)
+    
+    # If GET request, redirect to edit page
+    return redirect('edit_listing', id=id)

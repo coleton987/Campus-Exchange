@@ -188,19 +188,55 @@
                 </div>
             </div>
 
-            <div class="form-actions">
-                <button type="button" id="delete-listing-btn" class="btn btn-danger">
-                    <span>🗑️</span> Delete Listing
-                </button>
-                <div class="form-actions-right">
-                    <a href="{% url 'product_details' product.id %}" class="btn btn-secondary">
-                        <span>←</span> Cancel
-                    </a>
-                    <button type="submit" id="submit-product-btn" class="btn btn-primary">
-                        <span>💾</span> Save Changes
-                    </button>
+            
+    <button type="button" id="delete-listing-btn" class="btn btn-danger">
+        <span>🗑️</span> Delete Listing
+    </button>
+    <div class="form-actions-right">
+        <a href="{% url 'product_details' product.id %}" class="btn btn-secondary">
+            <span>←</span> Cancel
+        </a>
+        <button type="submit" id="submit-product-btn" class="btn btn-primary">
+            <span>💾</span> Save Changes
+        </button>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-modal" class="delete-modal">
+    <div class="delete-modal-content">
+        <div class="delete-modal-header">
+            <span class="delete-modal-icon">⚠️</span>
+            <h3 class="delete-modal-title">Delete Listing</h3>
+            <p class="delete-modal-subtitle">This action cannot be undone</p>
+        </div>
+        
+        <div class="delete-modal-body">
+            <div class="delete-warning">
+                <div class="delete-warning-title">⚠️ Warning</div>
+                <div class="delete-warning-text">
+                    Once you delete this listing, it will be permanently removed from Campus Exchange. 
+                    All photos and information will be lost forever.
                 </div>
             </div>
+            
+            <div class="product-info">
+                <div class="product-info-title">You are about to delete:</div>
+                <div class="product-name">{{ product.name }}</div>
+            </div>
+        </div>
+        
+        <div class="delete-modal-actions">
+            <button type="button" class="btn btn-cancel" onclick="closeDeleteModal()">
+                <span>✕</span> Cancel
+            </button>
+            <button type="button" id="confirm-delete-btn" class="btn btn-confirm-delete">
+                <span>🗑️</span> Yes, Delete Forever
+            </button>
+        </div>
+    </div>
+</div>
+
         </form>
     </div>
 
@@ -487,6 +523,77 @@ document.getElementById("submit-product-btn").addEventListener("click", function
         console.error("Error:", error);
         alert("Error updating product. Please try again.");
     });
+});
+
+document.getElementById('delete-listing-btn').addEventListener('click', function() {
+    showDeleteModal();
+});
+
+function showDeleteModal() {
+    const modal = document.getElementById('delete-modal');
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('delete-modal');
+    modal.classList.remove('show');
+    document.body.style.overflow = 'auto'; // Restore scrolling
+}
+
+// Close modal when clicking outside
+document.getElementById('delete-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeDeleteModal();
+    }
+});
+
+// Confirm delete functionality
+document.getElementById('confirm-delete-btn').addEventListener('click', function() {
+    const button = this;
+    button.classList.add('loading');
+    button.innerHTML = '<span>🗑️</span> Deleting...';
+    
+    fetch("{% url 'delete_listing' product.id %}", {
+        method: "POST",
+        headers: {
+            'X-CSRFToken': csrftoken,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            'confirm': true
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show success message briefly
+            button.innerHTML = '<span>✅</span> Deleted!';
+            button.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+            
+            // Redirect after a short delay
+            setTimeout(() => {
+                window.location.href = data.redirect_url || "{% url 'product_list' %}";
+            }, 1000);
+        } else {
+            alert('Error deleting listing: ' + (data.error || 'Unknown error'));
+            button.classList.remove('loading');
+            button.innerHTML = '<span>🗑️</span> Yes, Delete Forever';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error deleting listing. Please try again.');
+        button.classList.remove('loading');
+        button.innerHTML = '<span>🗑️</span> Yes, Delete Forever';
+    });
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeDeleteModal();
+    }
 });
 </script>
 
