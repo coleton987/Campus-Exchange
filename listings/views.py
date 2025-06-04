@@ -201,30 +201,29 @@ def update_photo_order(request):
         return JsonResponse({'success': False, 'error': str(e)})
     
 def delete_listing(request, id):
-   
     if request.method == 'POST':
         try:
             # Get the product and ensure the user owns it
             product = get_object_or_404(Product, id=id)
             
-            # Optional: Add permission check
-            if hasattr(product, 'seller') and product.seller != request.user:
+            # Add permission check - ensure user owns the product
+            if hasattr(product, 'seller') and product.seller and product.seller != request.user:
                 return JsonResponse({
                     'success': False, 
-                    'error': 'Permission denied'
+                    'error': 'Permission denied - you can only delete your own listings'
                 }, status=403)
             
-            # Delete all associated images first (they'll be automatically deleted due to CASCADE)
-            product_name = product.name  # Store name for success message
+            # Store product name for success message
+            product_name = product.name
             
-            # Delete the product (this will also delete associated ProductImage instances)
+            # Delete the product (this will also delete associated ProductImage instances due to CASCADE)
             product.delete()
             
             # Return success response
             return JsonResponse({
                 'success': True,
                 'message': f'"{product_name}" has been deleted successfully',
-                'redirect_url': '/listing/products/'  # Redirect to product list
+                'redirect_url': '/listing/products/'  # or use reverse('product_list')
             })
             
         except Product.DoesNotExist:
@@ -233,10 +232,14 @@ def delete_listing(request, id):
                 'error': 'Product not found'
             }, status=404)
         except Exception as e:
+            print(f"Error deleting product: {str(e)}")  # For debugging
             return JsonResponse({
                 'success': False,
                 'error': f'Error deleting product: {str(e)}'
             }, status=500)
     
-    # If GET request, redirect to edit page
-    return redirect('edit_listing', id=id)
+    # If GET request, redirect to edit page or show error
+    return JsonResponse({
+        'success': False,
+        'error': 'Invalid request method'
+    }, status=405)
