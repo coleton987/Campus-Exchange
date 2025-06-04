@@ -551,14 +551,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-
+ const modal = document.getElementById('delete-modal');
+ modal.style.display = 'none';
 function showDeleteModal() {
     console.log('Showing delete modal'); // Debug log
     const modal = document.getElementById('delete-modal');
     if (modal) {
-        modal.classList.add('show');
+        
         modal.style.display = 'flex'; // Ensure modal is visible
-        document.body.style.overflow = 'hidden';
+
     } else {
         console.error('Delete modal not found!');
     }
@@ -568,7 +569,7 @@ function closeDeleteModal() {
     console.log('Closing delete modal'); // Debug log
     const modal = document.getElementById('delete-modal');
     if (modal) {
-        modal.classList.remove('show');
+        
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
