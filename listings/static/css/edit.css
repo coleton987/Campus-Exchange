@@ -64,8 +64,8 @@
     text-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Add Container */
-.add-container {
+/* Edit Container */
+.edit-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 1rem;
@@ -204,6 +204,134 @@
     resize: vertical;
 }
 
+/* Existing Images Section */
+.existing-images-container {
+    margin-bottom: 2rem;
+}
+
+.existing-images-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.existing-images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.existing-image-item {
+    position: relative;
+    background: white;
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+.existing-image-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.existing-image-wrapper {
+    position: relative;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    width: 100%;
+    height: 120px;
+    background: #f3f4f6;
+}
+
+.existing-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-existing-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 28px;
+    height: 28px;
+    background: #dc2626;
+    color: white;
+    border: 2px solid white;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.remove-existing-btn:hover {
+    background: #b91c1c;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.main-photo-badge {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.image-order {
+    display: block;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #6b7280;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+.no-images-text {
+    grid-column: 1/-1;
+    text-align: center;
+    color: #9ca3af;
+    font-style: italic;
+    padding: 2rem;
+    background: #f9fafb;
+    border-radius: 0.75rem;
+    border: 2px dashed #e5e7eb;
+}
+
+/* Upload Section */
+.upload-section {
+    border-top: 1px solid #f3f4f6;
+    padding-top: 1.5rem;
+}
+
+.upload-section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 /* Upload Zone */
 .upload-zone {
     border: 2px dashed #d1d5db;
@@ -291,21 +419,85 @@
     object-fit: cover;
 }
 
+/* Hide default Dropzone success/error icons */
+.upload-zone .dz-preview .dz-success-mark,
+.upload-zone .dz-preview .dz-error-mark {
+    display: none !important;
+}
+
+/* Style the preview container */
+.upload-zone .dz-preview {
+    position: relative;
+    display: inline-block;
+    margin: 0.5rem;
+    background: white;
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    min-width: 200px;
+}
+
+/* Style the image container with relative positioning */
+.upload-zone .dz-preview .dz-image {
+    border-radius: 0.5rem;
+    overflow: visible;
+    width: 180px;
+    height: 120px;
+    position: relative;
+    background: #f3f4f6;
+}
+
+.upload-zone .dz-preview .dz-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+/* FORCE the remove button to be positioned on the image */
 .upload-zone .dz-preview .dz-remove {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    background: #dc2626;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    font-size: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: absolute !important;
+    top: -8px !important;
+    right: -8px !important;
+    background: #dc2626 !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-radius: 50% !important;
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 1000 !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+    text-decoration: none !important;
+    line-height: 1 !important;
+}
+
+.upload-zone .dz-preview .dz-remove:hover {
+    background: #b91c1c !important;
+    transform: scale(1.1) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Hide the default filename display */
+.upload-zone .dz-preview .dz-filename {
+    display: none !important;
+}
+
+/* Hide file size display */
+.upload-zone .dz-preview .dz-size {
+    display: none !important;
+}
+
+/* Hide progress bar */
+.upload-zone .dz-preview .dz-progress {
+    display: none !important;
 }
 
 /* Form Actions */
@@ -364,7 +556,7 @@
 }
 
 .tips-card,
-.safety-card {
+.status-card {
     background: white;
     border-radius: 1rem;
     padding: 1.5rem;
@@ -373,7 +565,7 @@
 }
 
 .tips-title,
-.safety-title {
+.status-title {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -384,7 +576,7 @@
 }
 
 .tips-icon,
-.safety-icon {
+.status-icon {
     font-size: 1.25rem;
 }
 
@@ -414,15 +606,47 @@
     margin-bottom: 0;
 }
 
-.safety-text {
+/* Status Card Specific Styles */
+.status-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background: #f9fafb;
+    border-radius: 0.5rem;
+    border: 1px solid #f3f4f6;
+}
+
+.status-label {
+    font-weight: 500;
+    color: #6b7280;
     font-size: 0.875rem;
-    line-height: 1.6;
-    color: #4b5563;
+}
+
+.status-value {
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.875rem;
+}
+
+.status-value.active {
+    color: #10b981;
+    background: #d1fae5;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
 }
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-    .add-container {
+    .edit-container {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
@@ -447,7 +671,7 @@
         font-size: 1.125rem;
     }
     
-    .add-container {
+    .edit-container {
         padding: 1rem;
     }
     
@@ -485,6 +709,11 @@
     .spec-divider {
         display: none;
     }
+    
+    .existing-images-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 0.75rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -511,108 +740,121 @@
     }
     
     .tips-card,
-    .safety-card {
+    .status-card {
         padding: 1rem;
     }
-/* Hide default Dropzone success/error icons */
-.upload-zone .dz-preview .dz-success-mark,
-.upload-zone .dz-preview .dz-error-mark {
-    display: none !important;
-}
+    
+    .existing-images-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+    
+    .existing-image-wrapper {
+        height: 100px;
+    }
 
-/* Style the preview container */
-.upload-zone .dz-preview {
-    position: relative;
-    display: inline-block;
-    margin: 0.5rem;
-    background: white;
-    border-radius: 0.75rem;
-    padding: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e5e7eb;
-    min-width: 200px;
-}
 
-/* Style the image container with relative positioning */
-.upload-zone .dz-preview .dz-image {
-    border-radius: 0.5rem;
-    overflow: visible;
-    /* Changed from hidden to visible so button shows */
-    width: 180px;
-    height: 120px;
-    position: relative;
-    background: #f3f4f6;
-}
-
-.upload-zone .dz-preview .dz-image img {
+/* Additional CSS for the new features */
+.form-control {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 0.5rem;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* FORCE the remove button to be positioned on the image */
-.upload-zone .dz-preview .dz-remove {
-    position: absolute !important;
-    top: -8px !important;
-    /* Negative values to position outside the rounded image */
-    right: -8px !important;
-    background: #dc2626 !important;
-    color: white !important;
-    border: 2px solid white !important;
-    border-radius: 50% !important;
-    width: 28px !important;
-    height: 28px !important;
-    font-size: 16px !important;
-    font-weight: bold !important;
-    cursor: pointer !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    z-index: 1000 !important;
-    /* Very high z-index */
-    transition: all 0.2s ease !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
-    text-decoration: none !important;
-    line-height: 1 !important;
+.form-control:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.upload-zone .dz-preview .dz-remove:hover {
-    background: #b91c1c !important;
-    transform: scale(1.1) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+.form-control[type="number"] {
+    -moz-appearance: textfield;
 }
 
-/* Ensure the X symbol shows properly */
-.upload-zone .dz-preview .dz-remove::before {
-    content: '×' !important;
-    font-size: 18px !important;
-    line-height: 1 !important;
-    display: block !important;
+.form-control[type="number"]::-webkit-outer-spin-button,
+.form-control[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
-/* Hide the default filename display */
-.upload-zone .dz-preview .dz-filename {
-    display: none !important;
+.image-controls {
+    margin-top: 8px;
+    padding: 8px;
+    background-color: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
 }
 
-/* Hide file size display */
-.upload-zone .dz-preview .dz-size {
-    display: none !important;
+.image-order {
+    display: block;
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 6px;
 }
 
-/* Hide progress bar */
-.upload-zone .dz-preview .dz-progress {
-    display: none !important;
+.order-input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* Additional specific targeting for stubborn elements */
-.upload-zone .dz-preview[data-dz-thumbnail] .dz-remove {
-    position: absolute !important;
-    top: -8px !important;
-    right: -8px !important;
+.order-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #374151;
+    margin: 0;
 }
 
+.order-input {
+    width: 60px;
+    padding: 4px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
 
+.order-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.photo-order-actions {
+    margin-top: 16px;
+    padding: 16px;
+    background-color: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.btn-outline {
+    background-color: white;
+    color: #3b82f6;
+    border: 2px solid #3b82f6;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-outline:hover {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.order-help {
+    margin-top: 8px;
+}
+
+.order-help small {
+    color: #6b7280;
+}
 
 }

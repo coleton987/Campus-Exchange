@@ -2,7 +2,11 @@
 {% load static %}
 
 {% block title %}
-    Browse Listings - Campus Exchange
+    {% if showing_my_listings %}
+        My Listings - Campus Exchange
+    {% else %}
+        Browse Listings - Campus Exchange
+    {% endif %}
 {% endblock %}
 
 {% block css %}
@@ -14,22 +18,44 @@
 <div class="listings-hero">
     <div class="listings-hero-content">
         <h1 class="listings-hero-title">
-            <span class="listings-hero-icon">🛍️</span>
-            Browse Campus Listings
+            <span class="listings-hero-icon">
+                {% if showing_my_listings %}
+                    👤
+                {% else %}
+                    🛍️
+                {% endif %}
+            </span>
+            {% if showing_my_listings %}
+                My Campus Listings
+            {% else %}
+                Browse Campus Listings
+            {% endif %}
         </h1>
         <p class="listings-hero-subtitle">
-            Discover great deals from your fellow BJU students
+            {% if showing_my_listings %}
+                Manage and view your posted items
+            {% else %}
+                Discover great deals from your fellow BJU students
+            {% endif %}
         </p>
         <div class="listings-hero-stats">
             <div class="stat-item">
                 <span class="stat-number">{{ products|length }}</span>
-                <span class="stat-label">Active Listings</span>
+                <span class="stat-label">
+                    {% if showing_my_listings %}
+                        Your Listings
+                    {% else %}
+                        Active Listings
+                    {% endif %}
+                </span>
             </div>
+            {% if not showing_my_listings %}
             <div class="stat-divider"></div>
             <div class="stat-item">
                 <span class="stat-number">100%</span>
                 <span class="stat-label">Verified Students</span>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -37,14 +63,34 @@
 
 {% block content %}
 <div class="listings-container">
-    <!-- Filters Section -->
+    <!-- Navigation Links -->
     <section class="filters-section">
         <div class="filters-header">
-            <h2 class="filters-title">Find What You Need</h2>
+            <!-- Add navigation between all listings and my listings -->
+            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{% url 'product_list' %}" class="btn {% if not showing_my_listings %}btn-primary{% else %}btn-outline{% endif %}">
+                    <span>🛍️</span> All Listings
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'product_list' %}?my_listings=true" class="btn {% if showing_my_listings %}btn-primary{% else %}btn-outline{% endif %}">
+                    <span>👤</span> My Listings
+                </a>
+                {% endif %}
+            </div>
+            
+            <h2 class="filters-title">
+                {% if showing_my_listings %}
+                    Manage Your Items
+                {% else %}
+                    Find What You Need
+                {% endif %}
+            </h2>
+            
+            {% if not showing_my_listings %}
             <div class="filters-grid">
                 <div class="filter-group">
                     <label class="filter-label">Search</label>
-                    <input type="text" class="filter-input" placeholder="Search items...">
+                    <input type="text" class="filter-input" placeholder="Search items..." value="{{ request.GET.q }}">
                 </div>
                 <div class="filter-group">
                     <label class="filter-label">Category</label>
@@ -67,6 +113,15 @@
                     </select>
                 </div>
             </div>
+            {% else %}
+            <!-- For my listings, show a search box -->
+            <div style="max-width: 400px; margin: 0 auto;">
+                <div class="filter-group">
+                    <label class="filter-label">Search Your Items</label>
+                    <input type="text" class="filter-input" placeholder="Search your listings..." value="{{ request.GET.q }}">
+                </div>
+            </div>
+            {% endif %}
         </div>
     </section>
 
@@ -75,7 +130,13 @@
         <div class="products-header">
             <div class="products-count">
                 <span class="count-number">{{ products|length }}</span>
-                <span class="count-text">items found</span>
+                <span class="count-text">
+                    {% if showing_my_listings %}
+                        of your items
+                    {% else %}
+                        items found
+                    {% endif %}
+                </span>
             </div>
             <div class="sort-options">
                 <select class="sort-select">
@@ -101,8 +162,18 @@
                         </div>
                     {% endif %}
                     <div class="product-badge">
-                        <span class="badge-icon">✨</span>
-                        New
+                        <span class="badge-icon">
+                            {% if showing_my_listings %}
+                                👤
+                            {% else %}
+                                ✨
+                            {% endif %}
+                        </span>
+                        {% if showing_my_listings %}
+                            Yours
+                        {% else %}
+                            New
+                        {% endif %}
                     </div>
                 </div>
                 
@@ -139,12 +210,27 @@
         {% else %}
         <div class="empty-state">
             <div class="empty-icon">📭</div>
-            <h3 class="empty-title">No listings found</h3>
+            <h3 class="empty-title">
+                {% if showing_my_listings %}
+                    No listings yet
+                {% else %}
+                    No listings found
+                {% endif %}
+            </h3>
             <p class="empty-description">
-                Be the first to post an item or try adjusting your filters.
+                {% if showing_my_listings %}
+                    You haven't posted any items yet. Create your first listing to get started!
+                {% else %}
+                    Be the first to post an item or try adjusting your filters.
+                {% endif %}
             </p>
             <a href="/listing/add" class="btn btn-primary">
-                <span>➕</span> Post Your First Item
+                <span>➕</span> 
+                {% if showing_my_listings %}
+                    Post Your First Item
+                {% else %}
+                    Post New Listing
+                {% endif %}
             </a>
         </div>
         {% endif %}
@@ -153,17 +239,55 @@
     <!-- Quick Actions Section -->
     <section class="quick-actions-section">
         <div class="quick-actions-content">
-            <h3 class="quick-actions-title">Can't find what you're looking for?</h3>
-            <p class="quick-actions-subtitle">Post your own listing or browse by category</p>
+            <h3 class="quick-actions-title">
+                {% if showing_my_listings %}
+                    Manage Your Listings
+                {% else %}
+                    Can't find what you're looking for?
+                {% endif %}
+            </h3>
+            <p class="quick-actions-subtitle">
+                {% if showing_my_listings %}
+                    Add new items or browse other student listings
+                {% else %}
+                    Post your own listing or browse by category
+                {% endif %}
+            </p>
             <div class="quick-actions-buttons">
                 <a href="/listing/add" class="btn btn-primary">
                     <span>➕</span> Post New Listing
                 </a>
+                {% if showing_my_listings %}
+                <a href="{% url 'product_list' %}" class="btn btn-outline">
+                    <span>🛍️</span> Browse All Listings
+                </a>
+                {% else %}
                 <a href="/" class="btn btn-outline">
                     <span>🏠</span> Back to Home
                 </a>
+                {% endif %}
             </div>
         </div>
     </section>
 </div>
+
+<!-- Add some JavaScript for the search functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.querySelector('.filter-input');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const currentUrl = new URL(window.location);
+                if (this.value.trim()) {
+                    currentUrl.searchParams.set('q', this.value.trim());
+                } else {
+                    currentUrl.searchParams.delete('q');
+                }
+                window.location.href = currentUrl.toString();
+            }
+        });
+    }
+});
+</script>
 {% endblock %}

@@ -1,0 +1,490 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+    Edit Your Listing - Campus Exchange
+{% endblock %}
+
+{% block css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/edit.css' %}">
+{% endblock %}
+
+{% block header %}
+<div class="page-header">
+    <div class="header-background">
+        <div class="header-overlay"></div>
+    </div>
+    <div class="header-content">
+        <h1 class="header-title">
+            <span class="header-icon">✏️</span>
+            Edit Your Listing
+        </h1>
+        <p class="header-subtitle">Update your item details to attract more buyers</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="edit-container">
+    <div class="form-wrapper">
+        <div class="form-header">
+            <h2 class="form-title">Update Your Listing</h2>
+            <p class="form-subtitle">Make changes to keep your listing fresh and accurate</p>
+        </div>
+
+        <form id="productForm" method="post" class="product-form">
+            {% csrf_token %}
+
+            <div class="form-section">
+                <h3 class="section-title">
+                    <span class="section-icon">📝</span>
+                    Basic Information
+                </h3>
+                
+                <div class="form-group">
+                    <label for="product-name" class="form-label">
+                        Item Name
+                        <span class="required">*</span>
+                    </label>
+                    <input type="text" 
+                           id="product-name" 
+                           name="name" 
+                           class="form-control" 
+                           value="{{ product.name }}" 
+                           placeholder="Enter item name"
+                           required>
+                    <div class="form-help">Give your item a clear, descriptive name</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-description" class="form-label">
+                        Description
+                        <span class="required">*</span>
+                    </label>
+                    <textarea id="product-description" 
+                              name="description" 
+                              class="form-control" 
+                              rows="4" 
+                              placeholder="Describe the condition, features, and any important details"
+                              required>{{ product.description }}</textarea>
+                    <div class="form-help">Describe the condition, features, and any important details</div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">
+                    <span class="section-icon">💵</span>
+                    Pricing & Availability
+                </h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-price" class="form-label">
+                            Price ($)
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" 
+                               id="product-price" 
+                               name="price" 
+                               class="form-control" 
+                               value="{{ product.price }}" 
+                               step="0.01" 
+                               min="0" 
+                               placeholder="0.00"
+                               required>
+                        <div class="form-help">Set a competitive price</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-stock" class="form-label">
+                            Quantity Available
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" 
+                               id="product-stock" 
+                               name="stock" 
+                               class="form-control" 
+                               value="{{ product.stock }}" 
+                               min="1" 
+                               placeholder="1"
+                               required>
+                        <div class="form-help">How many do you have?</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">
+                    <span class="section-icon">📸</span>
+                    Photos
+                </h3>
+                <p class="section-description">Manage your listing photos. You can reorder them, add new ones, or remove existing ones.</p>
+                
+                <!-- Existing Images Display -->
+                <div id="existing-images-container" class="existing-images-container">
+                    <h4 class="existing-images-title">Current Photos</h4>
+                    <div class="existing-images-grid" id="existing-images-grid">
+                        {% for image in product.images.all %}
+                        <div class="existing-image-item" data-image-id="{{ image.id }}">
+                            <div class="existing-image-wrapper">
+                                <img src="{{ image.image.url }}" alt="Product image">
+                                <button type="button" class="remove-existing-btn" onclick="removeExistingImage({{ image.id }}, this)">
+                                    ×
+                                </button>
+                                {% if forloop.first %}
+                                <span class="main-photo-badge">Main Photo</span>
+                                {% endif %}
+                            </div>
+                            <div class="image-controls">
+                                <span class="image-order">Current: Photo {{ forloop.counter }}</span>
+                                <div class="order-input-group">
+                                    <label for="order-{{ image.id }}" class="order-label">New Position:</label>
+                                    <input type="number" 
+                                           id="order-{{ image.id }}" 
+                                           name="image_order_{{ image.id }}" 
+                                           class="order-input" 
+                                           value="{{ forloop.counter }}" 
+                                           min="1" 
+                                           max="{{ product.images.count }}"
+                                           onchange="updateImageOrder({{ image.id }}, this.value)">
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="no-images-text">No photos uploaded yet</p>
+                        {% endfor %}
+                    </div>
+                    
+                    {% if product.images.all %}
+                    <div class="photo-order-actions">
+                        <button type="button" class="btn btn-outline" onclick="savePhotoOrder()">
+                            <span>🔄</span> Save Photo Order
+                        </button>
+                        <div class="order-help">
+                            <small>💡 Photo #1 will be your main photo shown in listings</small>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Upload Zone for New Images -->
+                <div class="upload-section">
+                    <h4 class="upload-section-title">Add New Photos</h4>
+                    <div class="upload-zone" id="my-awesome-dropzone">
+                        <div class="upload-content">
+                            <div class="upload-icon">📷</div>
+                            <h4 class="upload-title">Drag & Drop New Photos Here</h4>
+                            <p class="upload-subtitle">or click to browse</p>
+                            <div class="upload-specs">
+                                <span class="spec-item">Up to 6 total photos</span>
+                                <span class="spec-divider">•</span>
+                                <span class="spec-item">Max 5MB each</span>
+                                <span class="spec-divider">•</span>
+                                <span class="spec-item">JPG, PNG</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'product_details' product.id %}" class="btn btn-secondary">
+                    <span>←</span> Cancel
+                </a>
+                <button type="submit" id="submit-product-btn" class="btn btn-primary">
+                    <span>💾</span> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="tips-sidebar">
+        <div class="tips-card">
+            <h3 class="tips-title">
+                <span class="tips-icon">💡</span>
+                Editing Tips
+            </h3>
+            <ul class="tips-list">
+                <li class="tip-item">
+                    <strong>Update regularly:</strong> Keep your listing fresh to stay visible
+                </li>
+                <li class="tip-item">
+                    <strong>Adjust pricing:</strong> Lower prices if your item isn't getting interest
+                </li>
+                <li class="tip-item">
+                    <strong>Reorder photos:</strong> Put your best photo first - it's your main image
+                </li>
+                <li class="tip-item">
+                    <strong>Add more photos:</strong> More angles help buyers make decisions
+                </li>
+                <li class="tip-item">
+                    <strong>Improve description:</strong> Add details buyers are asking about
+                </li>
+                <li class="tip-item">
+                    <strong>Check competition:</strong> See what similar items are selling for
+                </li>
+            </ul>
+        </div>
+
+        <div class="status-card">
+            <h3 class="status-title">
+                <span class="status-icon">📊</span>
+                Listing Status
+            </h3>
+            <div class="status-info">
+                <div class="status-item">
+                    <span class="status-label">Created:</span>
+                    <span class="status-value">{{ product.created_at|date:"M d, Y" }}</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Last Updated:</span>
+                    <span class="status-value">{{ product.updated_at|date:"M d, Y" }}</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Status:</span>
+                    <span class="status-value active">Active</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dropzone.js CSS from CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css" />
+<!-- Dropzone.js JS from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
+
+<script>
+Dropzone.autoDiscover = false;
+
+var csrftoken = "{{ csrf_token }}";
+var productId = {{ product.id }};
+var currentImageCount = {{ product.images.count }};
+var maxImages = 6;
+var pendingOrderChanges = {};
+
+// Initialize Dropzone for new image uploads
+var myDropzone = new Dropzone("#my-awesome-dropzone", {
+    url: "{% url 'file_upload' %}",
+    paramName: "file",
+    maxFilesize: 5,
+    parallelUploads: 6,
+    maxFiles: maxImages - currentImageCount,
+    acceptedFiles: "image/*",
+    autoProcessQueue: false,
+    addRemoveLinks: true,
+    dictRemoveFile: "×",
+    headers: {
+        "X-CSRFToken": csrftoken
+    },
+    init: function() {
+        this.on("sending", function(file, xhr, formData) {
+            formData.append("product_id", productId);
+        });
+        
+        this.on("queuecomplete", function() {
+            window.location.reload();
+        });
+        
+        this.on("error", function(file, response) {
+            console.log("Error uploading image:", response);
+        });
+        
+        // Custom styling for previews (same as add.html)
+        this.on("addedfile", function(file) {
+            var successMark = file.previewElement.querySelector(".dz-success-mark");
+            var errorMark = file.previewElement.querySelector(".dz-error-mark");
+            if (successMark) successMark.style.display = "none";
+            if (errorMark) errorMark.style.display = "none";
+            
+            setTimeout(function() {
+                var removeButton = file.previewElement.querySelector(".dz-remove");
+                var imageContainer = file.previewElement.querySelector(".dz-image");
+                
+                if (removeButton && imageContainer) {
+                    removeButton.remove();
+                    imageContainer.appendChild(removeButton);
+                    
+                    removeButton.style.position = "absolute";
+                    removeButton.style.top = "-8px";
+                    removeButton.style.right = "-8px";
+                    removeButton.style.width = "28px";
+                    removeButton.style.height = "28px";
+                    removeButton.style.backgroundColor = "#dc2626";
+                    removeButton.style.color = "white";
+                    removeButton.style.border = "2px solid white";
+                    removeButton.style.borderRadius = "50%";
+                    removeButton.style.display = "flex";
+                    removeButton.style.alignItems = "center";
+                    removeButton.style.justifyContent = "center";
+                    removeButton.style.cursor = "pointer";
+                    removeButton.style.fontSize = "16px";
+                    removeButton.style.fontWeight = "bold";
+                    removeButton.style.zIndex = "1000";
+                    removeButton.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.4)";
+                    removeButton.style.textDecoration = "none";
+                    removeButton.innerHTML = "×";
+                    
+                    removeButton.addEventListener('mouseenter', function() {
+                        this.style.backgroundColor = "#b91c1c";
+                        this.style.transform = "scale(1.1)";
+                    });
+                    
+                    removeButton.addEventListener('mouseleave', function() {
+                        this.style.backgroundColor = "#dc2626";
+                        this.style.transform = "scale(1)";
+                    });
+                }
+            }, 100);
+        });
+        
+        this.on("success", function(file, response) {
+            var successMark = file.previewElement.querySelector(".dz-success-mark");
+            if (successMark) successMark.style.display = "none";
+        });
+        
+        this.on("removedfile", function(file) {
+            console.log("File removed from dropzone");
+        });
+    }
+});
+
+// Function to track photo order changes
+function updateImageOrder(imageId, newOrder) {
+    pendingOrderChanges[imageId] = parseInt(newOrder);
+    
+    // Visual feedback that there are pending changes
+    var orderInput = document.getElementById('order-' + imageId);
+    orderInput.style.backgroundColor = '#ffd700';
+    orderInput.style.borderColor = '#ff8c00';
+    
+    // Show save button if not already visible
+    var saveButton = document.querySelector('.photo-order-actions');
+    if (saveButton) {
+        saveButton.style.display = 'block';
+    }
+}
+
+// Function to save photo order changes
+function savePhotoOrder() {
+    if (Object.keys(pendingOrderChanges).length === 0) {
+        alert('No order changes to save.');
+        return;
+    }
+    
+    fetch("{% url 'update_photo_order' %}", {
+        method: "POST",
+        headers: {
+            'X-CSRFToken': csrftoken,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            'product_id': productId,
+            'order_changes': pendingOrderChanges
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            //alert('Photo order updated successfully!');
+            window.location.reload();
+        } else {
+            alert('Error updating photo order: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error updating photo order. Please try again.');
+    });
+}
+
+// Function to remove existing images
+function removeExistingImage(imageId, buttonElement) {
+    if (confirm('Are you sure you want to remove this photo?')) {
+        fetch("{% url 'remove_image' %}", {
+            method: "POST",
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'image_id': imageId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Remove the image from the display
+                var imageItem = buttonElement.closest('.existing-image-item');
+                imageItem.remove();
+                
+                // Update current image count and dropzone max files
+                currentImageCount--;
+                myDropzone.options.maxFiles = maxImages - currentImageCount;
+                
+                // Check if no images left
+                var grid = document.getElementById('existing-images-grid');
+                if (grid.children.length === 0) {
+                    grid.innerHTML = '<p class="no-images-text">No photos uploaded yet</p>';
+                }
+                
+                // Remove from pending order changes if it was there
+                delete pendingOrderChanges[imageId];
+            } else {
+                alert('Error removing image: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error removing image. Please try again.');
+        });
+    }
+}
+
+// Handle form submission
+document.getElementById("submit-product-btn").addEventListener("click", function(event) {
+    event.preventDefault();
+
+    var form = document.getElementById("productForm");
+    var formData = new FormData(form);
+
+    fetch("{% url 'edit_listing' product.id %}", {
+        method: "POST",
+        headers: {
+            'X-CSRFToken': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest'  // This is the key addition!
+        },
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Process any new images if they exist
+            if (myDropzone.getQueuedFiles().length > 0) {
+                console.log("Processing new image uploads...");
+                myDropzone.processQueue();
+            } else {
+                // No new images, redirect to product details
+                window.location.href = data.redirect_url || "{% url 'product_details' product.id %}";
+            }
+        } else {
+            console.log("Error: ", data.errors);
+            alert("Error updating product: " + JSON.stringify(data.errors));
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Error updating product. Please try again.");
+    });
+});
+</script>
+
+
+
+{% endblock %}
