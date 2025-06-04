@@ -18,6 +18,10 @@ class Product(models.Model):
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='product_images/')
-
+    order = models.PositiveIntegerField(default=0)  # Add ordering field
+    
+    class Meta:
+        ordering = ['order', 'id']  # Order by order field, then by id (which preserves creation order)
+    
     def __str__(self):
-        return f"{self.product.name} Image"
+        return f"{self.product.name} Image {self.order}"

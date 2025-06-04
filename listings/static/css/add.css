@@ -514,4 +514,102 @@
     .safety-card {
         padding: 1rem;
     }
+/* Hide default Dropzone success/error icons */
+.upload-zone .dz-preview .dz-success-mark,
+.upload-zone .dz-preview .dz-error-mark {
+    display: none !important;
+}
+
+/* Style the preview container */
+.upload-zone .dz-preview {
+    position: relative;
+    display: inline-block;
+    margin: 0.5rem;
+    background: white;
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    min-width: 200px;
+}
+
+/* Style the image container with relative positioning */
+.upload-zone .dz-preview .dz-image {
+    border-radius: 0.5rem;
+    overflow: visible;
+    /* Changed from hidden to visible so button shows */
+    width: 180px;
+    height: 120px;
+    position: relative;
+    background: #f3f4f6;
+}
+
+.upload-zone .dz-preview .dz-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+/* FORCE the remove button to be positioned on the image */
+.upload-zone .dz-preview .dz-remove {
+    position: absolute !important;
+    top: -8px !important;
+    /* Negative values to position outside the rounded image */
+    right: -8px !important;
+    background: #dc2626 !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-radius: 50% !important;
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 1000 !important;
+    /* Very high z-index */
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+    text-decoration: none !important;
+    line-height: 1 !important;
+}
+
+.upload-zone .dz-preview .dz-remove:hover {
+    background: #b91c1c !important;
+    transform: scale(1.1) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Ensure the X symbol shows properly */
+.upload-zone .dz-preview .dz-remove::before {
+    content: '×' !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+    display: block !important;
+}
+
+/* Hide the default filename display */
+.upload-zone .dz-preview .dz-filename {
+    display: none !important;
+}
+
+/* Hide file size display */
+.upload-zone .dz-preview .dz-size {
+    display: none !important;
+}
+
+/* Hide progress bar */
+.upload-zone .dz-preview .dz-progress {
+    display: none !important;
+}
+
+/* Additional specific targeting for stubborn elements */
+.upload-zone .dz-preview[data-dz-thumbnail] .dz-remove {
+    position: absolute !important;
+    top: -8px !important;
+    right: -8px !important;
+}
 }

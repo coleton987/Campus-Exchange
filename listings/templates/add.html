@@ -93,7 +93,7 @@
                     <span class="section-icon">📸</span>
                     Photos
                 </h3>
-                <p class="section-description">Add up to 6 high-quality photos to showcase your item</p>
+                <p class="section-description">Add up to 6 high-quality photos to showcase your item. The first image will be the main photo.</p>
                 
                 <div class="upload-zone" id="my-awesome-dropzone">
                     <div class="upload-content">
@@ -107,7 +107,17 @@
                             <span class="spec-divider">•</span>
                             <span class="spec-item">JPG, PNG</span>
                         </div>
+                        <div class="upload-order-note">
+                            <small>📌 Images will be displayed in the order you upload them</small>
+                        </div>
                     </div>
+                </div>
+                
+                <!-- Image preview area with reordering -->
+                <div id="image-preview-container" class="image-preview-container" style="display: none;">
+                    <h4>Image Preview & Order</h4>
+                    <p class="preview-help">Drag images to reorder them. The first image will be your main listing photo.</p>
+                    <div id="image-preview-list" class="image-preview-list"></div>
                 </div>
             </div>
 
@@ -131,6 +141,9 @@
             <ul class="tips-list">
                 <li class="tip-item">
                     <strong>Take great photos:</strong> Use natural lighting and show different angles
+                </li>
+                <li class="tip-item">
+                    <strong>First photo matters:</strong> Your first image will be the main listing photo
                 </li>
                 <li class="tip-item">
                     <strong>Be honest:</strong> Accurately describe condition and any flaws
@@ -170,6 +183,7 @@ Dropzone.autoDiscover = false;
 
 var csrftoken = "{{ csrf_token }}";
 var productId = null;
+var uploadedImages = [];
 
 // Initialize Dropzone for image uploads
 var myDropzone = new Dropzone("#my-awesome-dropzone", {
@@ -180,7 +194,8 @@ var myDropzone = new Dropzone("#my-awesome-dropzone", {
     maxFiles: 6,
     acceptedFiles: "image/*",
     autoProcessQueue: false,
-    addRemoveLinks: true, 
+    addRemoveLinks: true,
+    dictRemoveFile: "×", // Set the remove button text to X
     headers: {
         "X-CSRFToken": csrftoken
     },
@@ -188,14 +203,108 @@ var myDropzone = new Dropzone("#my-awesome-dropzone", {
         this.on("sending", function(file, xhr, formData) {
             formData.append("product_id", productId);
         });
+        
         this.on("queuecomplete", function() {
             window.location.href = "{% url 'product_list' %}";
         });
+        
         this.on("error", function(file, response) {
             console.log("Error uploading image:", response);
         });
+        
+        // Custom styling and positioning for each preview
+        this.on("addedfile", function(file) {
+            // Hide default success/error marks
+            var successMark = file.previewElement.querySelector(".dz-success-mark");
+            var errorMark = file.previewElement.querySelector(".dz-error-mark");
+            if (successMark) successMark.style.display = "none";
+            if (errorMark) errorMark.style.display = "none";
+            
+            // Force position the remove button on the image
+            setTimeout(function() {
+                var removeButton = file.previewElement.querySelector(".dz-remove");
+                var imageContainer = file.previewElement.querySelector(".dz-image");
+                
+                if (removeButton && imageContainer) {
+                    // Remove from current position and add to image container
+                    removeButton.remove();
+                    imageContainer.appendChild(removeButton);
+                    
+                    // Force the styling
+                    removeButton.style.position = "absolute";
+                    removeButton.style.top = "-8px";
+                    removeButton.style.right = "-8px";
+                    removeButton.style.width = "28px";
+                    removeButton.style.height = "28px";
+                    removeButton.style.backgroundColor = "#dc2626";
+                    removeButton.style.color = "white";
+                    removeButton.style.border = "2px solid white";
+                    removeButton.style.borderRadius = "50%";
+                    removeButton.style.display = "flex";
+                    removeButton.style.alignItems = "center";
+                    removeButton.style.justifyContent = "center";
+                    removeButton.style.cursor = "pointer";
+                    removeButton.style.fontSize = "16px";
+                    removeButton.style.fontWeight = "bold";
+                    removeButton.style.zIndex = "1000";
+                    removeButton.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.4)";
+                    removeButton.style.textDecoration = "none";
+                    removeButton.innerHTML = "×";
+                    
+                    // Add hover effect
+                    removeButton.addEventListener('mouseenter', function() {
+                        this.style.backgroundColor = "#b91c1c";
+                        this.style.transform = "scale(1.1)";
+                    });
+                    
+                    removeButton.addEventListener('mouseleave', function() {
+                        this.style.backgroundColor = "#dc2626";
+                        this.style.transform = "scale(1)";
+                    });
+                }
+            }, 100); // Small delay to ensure DOM is ready
+        });
+        
+        // Handle successful upload
+        this.on("success", function(file, response) {
+            var successMark = file.previewElement.querySelector(".dz-success-mark");
+            if (successMark) successMark.style.display = "none";
+        });
+        
+        // Handle remove file
+        this.on("removedfile", function(file) {
+            console.log("File removed from dropzone");
+        });
     }
 });
+
+function updateImagePreview() {
+    const container = document.getElementById('image-preview-container');
+    const list = document.getElementById('image-preview-list');
+    
+    if (myDropzone.files.length > 0) {
+        container.style.display = 'block';
+        list.innerHTML = '';
+        
+        myDropzone.files.forEach((file, index) => {
+            const preview = document.createElement('div');
+            preview.className = 'image-preview-item';
+            preview.innerHTML = `
+                <div class="preview-image">
+                    <img src="${file.dataURL || URL.createObjectURL(file)}" alt="Preview">
+                </div>
+                <div class="preview-info">
+                    <span class="preview-order">#${index + 1}</span>
+                    <span class="preview-name">${file.name}</span>
+                    ${index === 0 ? '<span class="main-badge">Main Photo</span>' : ''}
+                </div>
+            `;
+            list.appendChild(preview);
+        });
+    } else {
+        container.style.display = 'none';
+    }
+}
 
 document.getElementById("submit-product-btn").addEventListener("click", function(event) {
     event.preventDefault();
@@ -216,6 +325,7 @@ document.getElementById("submit-product-btn").addEventListener("click", function
             productId = data.product_id;
             
             if (myDropzone.getQueuedFiles().length > 0) {
+                console.log("Processing image upload queue...");
                 myDropzone.processQueue();
             } else {
                 console.log("No files to upload.");
@@ -223,9 +333,15 @@ document.getElementById("submit-product-btn").addEventListener("click", function
             }
         } else {
             console.log("Error: Product ID not returned.");
+            alert("Error creating product: " + JSON.stringify(data.errors));
         }
     })
-    .catch(error => console.error("Error:", error));
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Error creating product. Please try again.");
+    });
 });
 </script>
+
+
 {% endblock %}
