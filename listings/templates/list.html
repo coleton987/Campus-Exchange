@@ -86,7 +86,7 @@
                 {% endif %}
             </h2>
             
-            {% if not showing_my_listings %}
+            {% comment %} {% if not showing_my_listings %}
             <div class="filters-grid">
                 <div class="filter-group">
                     <label class="filter-label">Search</label>
@@ -121,7 +121,7 @@
                     <input type="text" class="filter-input" placeholder="Search your listings..." value="{{ request.GET.q }}">
                 </div>
             </div>
-            {% endif %}
+            {% endif %} {% endcomment %}
         </div>
     </section>
 
