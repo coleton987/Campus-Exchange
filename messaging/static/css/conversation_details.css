@@ -1,209 +1,169 @@
-/* Conversation Details Page Styles */
+/* Conversation Detail Styles */
 .conversation-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
     background: white;
     border-radius: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     border: 1px solid #f3f4f6;
     overflow: hidden;
+    height: calc(100vh - 200px);
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 200px);
-    min-height: 600px;
 }
 
-/* Conversation Header */
+/* Header Section */
 .conversation-header {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    color: white;
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.header-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-bottom: 1px solid #e5e7eb;
 }
 
-.participant-info {
+.conversation-info {
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
 .participant-avatar {
-    width: 3rem;
-    height: 3rem;
+    width: 3.5rem;
+    height: 3.5rem;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 1.25rem;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    font-size: 1.5rem;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .participant-details {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
 .participant-name {
     font-size: 1.5rem;
     font-weight: 700;
+    color: #1f2937;
     margin: 0;
-    text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.conversation-topic {
-    margin: 0.25rem 0 0 0;
-    opacity: 0.9;
+.conversation-about {
+    color: #6b7280;
     font-size: 0.875rem;
-    font-weight: 400;
+    margin: 0;
 }
 
-.header-actions {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.btn-icon {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    border: none;
+.delete-btn {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+.delete-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.delete-icon {
     font-size: 1rem;
-    backdrop-filter: blur(10px);
-}
-
-.btn-danger {
-    background: rgba(239, 68, 68, 0.2);
-    color: white;
-    border: 1px solid rgba(239, 68, 68, 0.3);
-}
-
-.btn-danger:hover {
-    background: rgba(239, 68, 68, 0.3);
-    transform: scale(1.05);
 }
 
 /* Messages Container */
 .messages-container {
     flex: 1;
-    overflow-y: auto;
-    padding: 1rem;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .messages-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem 2rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding-bottom: 1rem;
+    background: #fafafa;
 }
 
-/* Message Bubbles */
+/* Message Styles */
 .message-wrapper {
     display: flex;
-    align-items: flex-end;
-    gap: 0.5rem;
+    max-width: 75%;
 }
 
 .message-wrapper.sent {
-    justify-content: flex-end;
+    align-self: flex-end;
+    margin-left: auto;
 }
 
 .message-wrapper.received {
-    justify-content: flex-start;
+    align-self: flex-start;
+    margin-right: auto;
 }
 
 .message-bubble {
-    max-width: 70%;
-    min-width: 100px;
-    position: relative;
-}
-
-.message-content {
     padding: 0.875rem 1.25rem;
     border-radius: 1.25rem;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    word-wrap: break-word;
     position: relative;
+    word-wrap: break-word;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Sent messages (right side) */
-.sent .message-content {
+.message-wrapper.sent .message-bubble {
     background: linear-gradient(135deg, #3b82f6, #1d4ed8);
     color: white;
     border-bottom-right-radius: 0.5rem;
 }
 
-.sent .message-bubble::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: -8px;
-    width: 0;
-    height: 0;
-    border: 8px solid transparent;
-    border-left-color: #1d4ed8;
-    border-bottom: none;
-}
-
-/* Received messages (left side) */
-.received .message-content {
+.message-wrapper.received .message-bubble {
     background: white;
-    color: #374151;
-    border-bottom-left-radius: 0.5rem;
+    color: #1f2937;
     border: 1px solid #e5e7eb;
+    border-bottom-left-radius: 0.5rem;
 }
 
-.received .message-bubble::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: -8px;
-    width: 0;
-    height: 0;
-    border: 8px solid transparent;
-    border-right-color: white;
-    border-bottom: none;
+.message-text {
+    margin: 0;
+    line-height: 1.5;
+    font-size: 0.95rem;
 }
 
 .message-time {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
     font-size: 0.75rem;
-    margin-top: 0.25rem;
-    text-align: right;
-    opacity: 0.7;
+    opacity: 0.8;
 }
 
-.received .message-time {
-    text-align: left;
-    color: #6b7280;
+.sender-indicator {
+    font-weight: 600;
 }
 
-.sent .message-time {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-/* Message Input */
+/* Input Container */
 .message-input-container {
+    padding: 1.5rem 2rem;
     background: white;
     border-top: 1px solid #e5e7eb;
-    padding: 1.5rem 2rem;
 }
 
 .message-form {
@@ -214,10 +174,10 @@
     display: flex;
     align-items: flex-end;
     gap: 1rem;
+    padding: 0.75rem;
     background: #f8fafc;
-    border: 2px solid #e5e7eb;
+    border: 1px solid #e5e7eb;
     border-radius: 1.5rem;
-    padding: 0.75rem 1rem;
     transition: all 0.3s ease;
 }
 
@@ -226,51 +186,52 @@
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-#messageInput {
+.message-input {
     flex: 1;
     border: none;
     background: transparent;
-    resize: none;
     outline: none;
-    font-size: 0.9rem;
-    line-height: 1.5;
+    resize: none;
     font-family: inherit;
-    color: #374151;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    padding: 0.5rem 0;
     min-height: 20px;
     max-height: 120px;
-    overflow-y: auto;
+    color: #1f2937;
 }
 
-#messageInput::placeholder {
+.message-input::placeholder {
     color: #9ca3af;
 }
 
-.send-button {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    border: none;
+.send-btn {
     background: linear-gradient(135deg, #3b82f6, #1d4ed8);
     color: white;
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
     flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
 }
 
-.send-button:hover {
-    transform: scale(1.05);
+.send-btn:hover {
+    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
-.send-button:active {
-    transform: scale(0.95);
+.send-icon {
+    font-size: 1rem;
 }
 
-/* Modal Styles */
-.modal-overlay {
+/* Confirmation Dialog */
+.confirmation-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -284,185 +245,163 @@
     backdrop-filter: blur(4px);
 }
 
-.modal-content {
+.confirmation-dialog {
     background: white;
     border-radius: 1rem;
-    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.2);
+    padding: 0;
     max-width: 400px;
     width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
 }
 
-.modal-header {
-    padding: 1.5rem 1.5rem 0 1.5rem;
+.confirmation-overlay[style*="flex"] .confirmation-dialog {
+    transform: scale(1);
 }
 
-.modal-title {
-    font-size: 1.25rem;
+.confirmation-content {
+    padding: 2rem;
+    text-align: center;
+}
+
+.confirmation-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.confirmation-title {
+    font-size: 1.5rem;
     font-weight: 700;
     color: #1f2937;
-    margin: 0;
+    margin-bottom: 0.5rem;
 }
 
-.modal-body {
-    padding: 1rem 1.5rem;
-}
-
-.modal-body p {
+.confirmation-message {
     color: #6b7280;
+    margin-bottom: 2rem;
     line-height: 1.6;
-    margin: 0;
 }
 
-.modal-actions {
-    padding: 0 1.5rem 1.5rem 1.5rem;
+.confirmation-buttons {
     display: flex;
     gap: 0.75rem;
-    justify-content: flex-end;
-}
-
-/* Button Styles */
-.btn {
-    display: inline-flex;
-    align-items: center;
     justify-content: center;
-    padding: 0.625rem 1.25rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-decoration: none;
-    border-radius: 0.5rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: inherit;
-    gap: 0.5rem;
 }
 
-.btn-outline {
-    background: transparent;
-    color: #6b7280;
-    border: 1px solid #d1d5db;
-}
-
-.btn-outline:hover {
-    background: #f9fafb;
-    border-color: #9ca3af;
-}
-
-.btn-danger {
+.confirm-btn {
     background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
     box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
 }
 
-.btn-danger:hover {
+.confirm-btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
 
-/* Scrollbar Styling */
-.messages-container::-webkit-scrollbar {
-    width: 6px;
+.cancel-btn {
+    background: #f8fafc;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.messages-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.messages-container::-webkit-scrollbar-thumb {
-    background: rgba(156, 163, 175, 0.5);
-    border-radius: 3px;
-}
-
-.messages-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(156, 163, 175, 0.7);
+.cancel-btn:hover {
+    background: #f1f5f9;
+    border-color: #d1d5db;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .conversation-container {
-        height: calc(100vh - 140px);
+        height: calc(100vh - 150px);
         border-radius: 0;
         margin: 0;
     }
-    
+
     .conversation-header {
         padding: 1rem 1.5rem;
     }
-    
+
     .participant-name {
         font-size: 1.25rem;
     }
-    
+
     .participant-avatar {
-        width: 2.5rem;
-        height: 2.5rem;
-        font-size: 1rem;
+        width: 3rem;
+        height: 3rem;
+        font-size: 1.25rem;
     }
-    
-    .messages-container {
-        padding: 0.75rem;
+
+    .delete-btn {
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
     }
-    
+
+    .messages-list {
+        padding: 1rem 1.5rem;
+    }
+
     .message-input-container {
         padding: 1rem 1.5rem;
     }
-    
-    .message-content {
+
+    .message-wrapper {
         max-width: 85%;
     }
-    
-    .modal-content {
-        margin: 1rem;
-        width: calc(100% - 2rem);
+
+    .confirmation-dialog {
+        width: 95%;
+    }
+
+    .confirmation-content {
+        padding: 1.5rem;
     }
 }
 
 @media (max-width: 480px) {
     .conversation-header {
         padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
     }
-    
-    .header-content {
-        gap: 0.5rem;
-    }
-    
-    .participant-info {
+
+    .conversation-info {
+        flex-direction: column;
+        text-align: center;
         gap: 0.75rem;
     }
-    
-    .participant-name {
-        font-size: 1.125rem;
+
+    .messages-list {
+        padding: 1rem;
     }
-    
-    .conversation-topic {
-        font-size: 0.8rem;
-    }
-    
-    .messages-container {
-        padding: 0.5rem;
-    }
-    
+
     .message-input-container {
         padding: 1rem;
     }
-    
-    .input-wrapper {
-        padding: 0.5rem 0.75rem;
+
+    .participant-name {
+        font-size: 1.125rem;
     }
-    
-    .send-button {
-        width: 2.25rem;
-        height: 2.25rem;
-    }
-    
-    .modal-actions {
+
+    .confirmation-buttons {
         flex-direction: column;
     }
-    
-    .btn {
+
+    .confirm-btn,
+    .cancel-btn {
         width: 100%;
-        justify-content: center;
     }
 }

@@ -46,8 +46,8 @@ def verification_form(request):
             user = form.save()
             user.set_full_name(form.cleaned_data.get('full_name')) 
             login(request, user)
-            return redirect('/about/')  # Redirect to the home page after successful registration
-    
+            return redirect('/listing/products')  # Redirect to the products listing page after successful registration
+
     return render(request, 'verification_form.html')
 
 

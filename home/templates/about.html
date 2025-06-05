@@ -120,15 +120,41 @@
     </div>
 </section>
 
-<!-- CTA Section -->
-<section class="cta">
-    <div class="content-wrapper">
-        <h2>Ready to Get Started?</h2>
-        <p>Join hundreds of BJU students already using Campus Exchange</p>
-        <div class="cta-buttons">
-            <a href="/users/register" class="btn btn-primary">Sign Up Now</a>
-            <a href="/listing/products" class="btn btn-outline">Browse Listings</a>
+
+
+
+    <!-- CTA Section -->
+    {% if user.is_authenticated %}
+    <section class="cta-section authenticated">
+        <div class="cta-content">
+            <h2 class="cta-title">Welcome back, {{ user.full_name|title }}!</h2>
+            <p class="cta-subtitle">Ready to find your next great deal or sell something?</p>
+            <div class="cta-buttons">
+                <a href="/listing/products" class="btn btn-primary">
+                    <span>🔍</span> Browse Listings
+                </a>
+                <a href="/listing/add" class="btn btn-success">
+                    <span>➕</span> Post New Listing
+                </a>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+    {% else %}
+    <section class="cta">
+        <div class="content-wrapper">
+            <h2 class="cta-title">Ready to Join Campus Exchange?</h2>
+            <p class="cta-subtitle">
+                Join hundreds of BJU students already saving money and supporting each other.
+            </p>
+            <div class="cta-buttons">
+                <a href="/users/register" class="btn btn-primary">
+                    <span>🚀</span> Sign Up Free
+                </a>
+                <a href="/users/log_in" class="btn btn-outline">
+                    <span>👋</span> Login
+                </a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
 {% endblock %}

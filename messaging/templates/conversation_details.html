@@ -1,88 +1,133 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    Conversation
+    Conversation - Campus Exchange
 {% endblock %}
 
 {% block css %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/messaging.css' %}">
+<link rel="stylesheet" href="{% static 'css/conversation_details.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="delete-button">
-    <button class="delete-btn" onclick="showConfirmation()">Delete</button>
-</div>
-
-<!-- Confirmation Dialog -->
-<div id="confirmation-dialog" class="confirmation-dialog" style="display: none;">
-    <p>Are you sure you want to delete this conversation?</p>
-    <form method="post" action="{% url 'delete_conversation' conversation.id %}">
-        {% csrf_token %}
-        <button type="submit" class="confirm-btn">Yes</button>
-        <button type="button" class="cancel-btn" onclick="hideConfirmation()">No</button>
-    </form>
-</div>
-
-<div class="messaging-page">
-    <!-- Delete Button (Top Left of Outer White Box) -->
-    
-    <div class="messages">
-        {% for participant in conversation.participants.all %}
-            {% if participant != request.user %}
-                <h1 class='title'>{{conversation.full_name}}</h1>
-            {% endif %}
-        {% endfor %}
-        
-
-        {% for message in conversation.messages.all %}
-            {% if message.sender.email == request.user.email %}
-                <p class='sender'>{{ message.text }}</p><br>
-            {% else %}
-                <p class='receiver'>{{ message.text }}</p><br>
-            {% endif %}
-        {% endfor %}
+<div class="conversation-container">
+    <div class="conversation-header">
+        <div class="conversation-info">
+            {% for participant in conversation.participants.all %}
+                {% if participant != request.user %}
+                    <div class="participant-avatar">{{ participant.full_name|first|upper }}</div>
+                    <div class="participant-details">
+                        <h1 class="participant-name">{{ participant.full_name }}</h1>
+                        <p class="conversation-about">About: <strong>{{ conversation.product.name }}</strong></p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <button class="delete-btn" onclick="showConfirmation()">
+            <span class="delete-icon">🗑️</span>
+            Delete Chat
+        </button>
     </div>
 
-    <div class="text_box">
-        <form method="post" class='text_box'>
+    <div class="messages-container">
+        <div class="messages-list">
+            {% for message in conversation.messages.all %}
+                <div class="message-wrapper {% if message.sender.email == request.user.email %}sent{% else %}received{% endif %}">
+                    <div class="message-bubble">
+                        <p class="message-text">{{ message.text }}</p>
+                        <div class="message-time">
+                            {% if message.sender.email == request.user.email %}
+                                <span class="sender-indicator">You</span>
+                            {% else %}
+                                <span class="sender-indicator">{{ message.sender.full_name|first|upper }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="message-input-container">
+        <form method="post" class="message-form">
             {% csrf_token %}
-            <textarea id="messageInput" name="text" rows="1" placeholder="Type message here"></textarea>
-            <button type="submit">Send</button>
+            <div class="input-wrapper">
+                <textarea 
+                    id="messageInput" 
+                    name="text" 
+                    rows="1" 
+                    placeholder="Type your message..."
+                    class="message-input"
+                ></textarea>
+                <button type="submit" class="send-btn">
+                    <span class="send-icon">📤</span>
+                </button>
+            </div>
         </form>
     </div>
 </div>
 
+<!-- Confirmation Dialog -->
+<div id="confirmation-dialog" class="confirmation-overlay" style="display: none;">
+    <div class="confirmation-dialog">
+        <div class="confirmation-content">
+            <div class="confirmation-icon">⚠️</div>
+            <h3 class="confirmation-title">Delete Conversation</h3>
+            <p class="confirmation-message">Are you sure you want to delete this conversation? This action cannot be undone.</p>
+            <div class="confirmation-buttons">
+                <form method="post" action="{% url 'delete_conversation' conversation.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="confirm-btn">Delete</button>
+                </form>
+                <button type="button" class="cancel-btn" onclick="hideConfirmation()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    // Auto-resize textarea
     const textarea = document.getElementById('messageInput');
     textarea.addEventListener('input', () => {
         textarea.style.height = 'auto';
-        textarea.style.height = `${textarea.scrollHeight}px`;
+        textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
     });
 
-    const messageContainer = document.querySelector('.messages');
-    messageContainer.scrollTop = messageContainer.scrollHeight;
+    // Submit on Enter (without Shift)
+    const form = document.querySelector('.message-form');
+    textarea.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); // Prevent newline
+            form.submit(); // Submit the form
+        }
+    });
 
+    // Auto-scroll to bottom
+    const messagesContainer = document.querySelector('.messages-list');
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    // Confirmation dialog functions
     function showConfirmation() {
-        document.getElementById('confirmation-dialog').style.display = 'block';
-        const overlay = document.createElement('div');
-        overlay.className = 'overlay';
-        overlay.id = 'overlay';
-        document.body.appendChild(overlay);
+        document.getElementById('confirmation-dialog').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
     }
 
     function hideConfirmation() {
         document.getElementById('confirmation-dialog').style.display = 'none';
-        const overlay = document.getElementById('overlay');
-        if (overlay) {
-            document.body.removeChild(overlay);
-        }
+        document.body.style.overflow = 'auto';
     }
+
+    // Close dialog on overlay click
+    document.getElementById('confirmation-dialog').addEventListener('click', (e) => {
+        if (e.target.classList.contains('confirmation-overlay')) {
+            hideConfirmation();
+        }
+    });
+
+    // Focus on input when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        textarea.focus();
+    });
 </script>
 
 {% endblock %}
-
-
-
-
-

@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 <html lang="en">
 {% block title %}
-   Messages
+    Messages
 {% endblock %}
 
 {% block css %}
@@ -29,6 +29,11 @@
             </div>
         </div>
     </a>
+    {% empty %}
+    <div class="no-conversations">
+        <p>You have no ongoing conversations at the moment.</p>
+        <p>Start browsing products to begin a conversation with a seller!</p>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}
