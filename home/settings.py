@@ -31,12 +31,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8q!rjf-2%hhho6^-7ryr%-jyh$c5#d+6bt0bg5nm26$+csmqki'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
-    'your-app-name.herokuapp.com',
     '127.0.0.1',
     'coleton987-1.loca.lt',
+
     ]
 
 CSRF_TRUSTED_ORIGINS = ['https://coleton987-1.loca.lt']
@@ -71,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  
     
 ]
 
@@ -149,12 +150,17 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATICFILES_STORAGE = (
+  'whitenoise.storage.CompressedManifestStaticFilesStorage'
+)
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -166,6 +172,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
 SENDGRID_API_KEY = config('SENDGRID_API_KEY')
+SENDGRID_VERIFICATION_TEMPLATE_ID = config('SENDGRID_VERIFICATION_TEMPLATE_ID')
 
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')

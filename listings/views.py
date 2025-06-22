@@ -3,7 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ProductForm  # Make sure you're importing the correct form
 from .models import Product, ProductImage
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='/users/log_in/')
 def add_product(request):
     if request.method == 'POST':
         product_form = ProductForm(request.POST)
@@ -21,6 +23,7 @@ def add_product(request):
     
     return render(request, 'add.html', {'product_form': product_form})
 
+@login_required(login_url='/users/log_in/')
 def file_upload(request):
     if request.method == 'POST':
         # Fetch the product (you may need to send product ID from Dropzone)
@@ -63,6 +66,7 @@ def file_upload(request):
         
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
+@login_required(login_url='/users/log_in/')
 def product_list(request):
     query = request.GET.get('q', '')
     my_listings = request.GET.get('my_listings', '')  # Check for my_listings parameter
@@ -97,12 +101,13 @@ def product_list(request):
     
     return render(request, 'list.html', context)
 
-
+@login_required(login_url='/users/log_in/')
 def product_details(request, id):
     product = get_object_or_404(Product, id=id)
     # Images will be automatically ordered due to Meta ordering in model
     return render(request, 'product_detail.html', {'product': product})
 
+@login_required(login_url='/users/log_in/')
 def edit_listing(request, id):
     # Get the product first
     product = get_object_or_404(Product, id=id)
@@ -146,6 +151,7 @@ def edit_listing(request, id):
         'product': product
     })
 
+@login_required(login_url='/users/log_in/')
 def remove_image(request):
     if request.method == 'POST':
         import json
@@ -176,7 +182,7 @@ def remove_image(request):
 
 
 
-
+@login_required(login_url='/users/log_in/')
 def update_photo_order(request):
     try:
         data = json.loads(request.body)
@@ -199,7 +205,8 @@ def update_photo_order(request):
         
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
-    
+
+@login_required(login_url='/users/log_in/')
 def delete_listing(request, id):
     if request.method == 'POST':
         try:

@@ -1,0 +1,618 @@
+/* Page Header */
+.page-header {
+    position: relative;
+    height: 40vh;
+    min-height: 300px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%);
+}
+
+.header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.9) 0%,
+        rgba(29, 78, 216, 0.8) 50%,
+        rgba(30, 64, 175, 0.7) 100%
+    );
+}
+
+.header-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    padding: 2rem;
+    max-width: 600px;
+}
+
+.header-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    text-shadow: 2px 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.header-icon {
+    font-size: 3.5rem;
+}
+
+.header-subtitle {
+    font-size: 1.25rem;
+    font-weight: 400;
+    opacity: 0.95;
+    text-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Add Container */
+.add-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 3rem;
+    align-items: start;
+}
+
+/* Form Wrapper */
+.form-wrapper {
+    background: white;
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f3f4f6;
+    position: relative;
+    overflow: hidden;
+}
+
+.form-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+    font-size: 1rem;
+    color: #6b7280;
+    font-weight: 400;
+}
+
+/* Form Sections */
+.form-section {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.section-icon {
+    font-size: 1.5rem;
+}
+
+.section-description {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.required {
+    color: #dc2626;
+    margin-left: 0.25rem;
+}
+
+.form-help {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+}
+
+/* Input Styling */
+.product-form input,
+.product-form textarea,
+.product-form select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: #fafafa;
+}
+
+.product-form input:focus,
+.product-form textarea:focus,
+.product-form select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.product-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Upload Zone */
+.upload-zone {
+    border: 2px dashed #d1d5db;
+    border-radius: 1rem;
+    background: #fafafa;
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.upload-zone:hover {
+    border-color: #3b82f6;
+    background: #f8fafc;
+}
+
+.upload-zone.dz-drag-hover {
+    border-color: #3b82f6;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
+    transform: scale(1.02);
+}
+
+.upload-content {
+    pointer-events: none;
+}
+
+.upload-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
+
+.upload-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.upload-subtitle {
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+.upload-specs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+.spec-item {
+    font-weight: 500;
+}
+
+.spec-divider {
+    opacity: 0.5;
+}
+
+/* Dropzone Customization */
+.upload-zone .dz-preview {
+    display: inline-block;
+    margin: 0.5rem;
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    min-width: 200px;
+}
+
+.upload-zone .dz-preview .dz-image {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    width: 180px;
+    height: 120px;
+}
+
+.upload-zone .dz-preview .dz-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-zone .dz-preview .dz-remove {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f3f4f6;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0.75rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    gap: 0.5rem;
+    min-width: 120px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
+
+.btn-secondary {
+    background: #f8fafc;
+    color: #374151;
+    border: 2px solid #e5e7eb;
+}
+
+.btn-secondary:hover {
+    background: #f1f5f9;
+    border-color: #d1d5db;
+}
+
+/* Sidebar */
+.tips-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.tips-card,
+.safety-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f3f4f6;
+}
+
+.tips-title,
+.safety-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+.tips-icon,
+.safety-icon {
+    font-size: 1.25rem;
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tip-item {
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #4b5563;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.tip-item::before {
+    content: '✨';
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.tip-item:last-child {
+    margin-bottom: 0;
+}
+
+.safety-text {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #4b5563;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .add-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .tips-sidebar {
+        order: -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-title {
+        font-size: 2.5rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .header-icon {
+        font-size: 3rem;
+    }
+    
+    .header-subtitle {
+        font-size: 1.125rem;
+    }
+    
+    .add-container {
+        padding: 1rem;
+    }
+    
+    .form-wrapper {
+        padding: 1.5rem;
+    }
+    
+    .form-title {
+        font-size: 1.75rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .upload-zone {
+        padding: 2rem 1rem;
+    }
+    
+    .upload-specs {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .spec-divider {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-header {
+        height: 30vh;
+        min-height: 250px;
+    }
+    
+    .header-title {
+        font-size: 2rem;
+    }
+    
+    .header-icon {
+        font-size: 2.5rem;
+    }
+    
+    .form-wrapper {
+        padding: 1rem;
+        border-radius: 1rem;
+    }
+    
+    .section-title {
+        font-size: 1.125rem;
+    }
+    
+    .tips-card,
+    .safety-card {
+        padding: 1rem;
+    }
+/* Hide default Dropzone success/error icons */
+.upload-zone .dz-preview .dz-success-mark,
+.upload-zone .dz-preview .dz-error-mark {
+    display: none !important;
+}
+
+/* Style the preview container */
+.upload-zone .dz-preview {
+    position: relative;
+    display: inline-block;
+    margin: 0.5rem;
+    background: white;
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    min-width: 200px;
+}
+
+/* Style the image container with relative positioning */
+.upload-zone .dz-preview .dz-image {
+    border-radius: 0.5rem;
+    overflow: visible;
+    /* Changed from hidden to visible so button shows */
+    width: 180px;
+    height: 120px;
+    position: relative;
+    background: #f3f4f6;
+}
+
+.upload-zone .dz-preview .dz-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+/* FORCE the remove button to be positioned on the image */
+.upload-zone .dz-preview .dz-remove {
+    position: absolute !important;
+    top: -8px !important;
+    /* Negative values to position outside the rounded image */
+    right: -8px !important;
+    background: #dc2626 !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-radius: 50% !important;
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 1000 !important;
+    /* Very high z-index */
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+    text-decoration: none !important;
+    line-height: 1 !important;
+}
+
+.upload-zone .dz-preview .dz-remove:hover {
+    background: #b91c1c !important;
+    transform: scale(1.1) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Ensure the X symbol shows properly */
+.upload-zone .dz-preview .dz-remove::before {
+    content: '×' !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+    display: block !important;
+}
+
+/* Hide the default filename display */
+.upload-zone .dz-preview .dz-filename {
+    display: none !important;
+}
+
+/* Hide file size display */
+.upload-zone .dz-preview .dz-size {
+    display: none !important;
+}
+
+/* Hide progress bar */
+.upload-zone .dz-preview .dz-progress {
+    display: none !important;
+}
+
+/* Additional specific targeting for stubborn elements */
+.upload-zone .dz-preview[data-dz-thumbnail] .dz-remove {
+    position: absolute !important;
+    top: -8px !important;
+    right: -8px !important;
+}
+
+
+
+}

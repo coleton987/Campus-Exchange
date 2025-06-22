@@ -16,10 +16,19 @@
             <div class="verification-icon">📧</div>
             <h1 class="verification-title">Check Your Email</h1>
             <p class="verification-subtitle">
-                We've sent a 6-digit verification code to your BJU email address.
+                We've sent a 6-digit verification code to your BJU email address{% if email %} (<strong>{{ email }}</strong>){% endif %}.
                 Enter it below to complete your registration.
             </p>
         </div>
+        
+        <!-- Display messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" style="margin-bottom: 1rem; padding: 0.75rem 1rem; border-radius: 0.5rem; {% if message.tags == 'error' %}background-color: #fef2f2; color: #dc2626; border: 1px solid #fecaca;{% elif message.tags == 'success' %}background-color: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0;{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
         
         <form class="verification-form" action="/users/verification_form/" method="post">
             {% csrf_token %}
@@ -49,7 +58,7 @@
         <div class="verification-footer">
             <p class="help-text">
                 Didn't receive the code? 
-                <a href="#" class="resend-link">Resend verification email</a>
+                <a href="#" class="resend-link" id="resendLink">Resend verification email</a>
             </p>
             <p class="help-text">
                 Having trouble? 
@@ -58,4 +67,115 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const resendLink = document.getElementById('resendLink');
+    let isResending = false;
+    let countdown = 0;
+    let countdownTimer;
+
+    resendLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        if (isResending || countdown > 0) {
+            return;
+        }
+
+        isResending = true;
+        resendLink.textContent = 'Sending...';
+        resendLink.style.pointerEvents = 'none';
+        resendLink.style.opacity = '0.6';
+
+        // Get CSRF token
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch('/users/resend_verification/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showMessage(data.message, 'success');
+                startCountdown();
+            } else {
+                showMessage(data.message, 'error');
+                resetResendLink();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Network error. Please try again.', 'error');
+            resetResendLink();
+        });
+    });
+
+    function showMessage(message, type) {
+        // Remove existing messages
+        const existingMessages = document.querySelectorAll('.alert');
+        existingMessages.forEach(msg => msg.remove());
+
+        // Create new message
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `alert alert-${type}`;
+        messageDiv.style.cssText = `
+            margin-bottom: 1rem; 
+            padding: 0.75rem 1rem; 
+            border-radius: 0.5rem; 
+            ${type === 'error' ? 
+                'background-color: #fef2f2; color: #dc2626; border: 1px solid #fecaca;' : 
+                'background-color: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0;'
+            }
+        `;
+        messageDiv.textContent = message;
+
+        // Insert after header
+        const header = document.querySelector('.verification-header');
+        header.insertAdjacentElement('afterend', messageDiv);
+
+        // Auto-remove success messages after 5 seconds
+        if (type === 'success') {
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 5000);
+        }
+    }
+
+    function startCountdown() {
+        countdown = 60; // 60 second cooldown
+        updateCountdownDisplay();
+        
+        countdownTimer = setInterval(() => {
+            countdown--;
+            if (countdown <= 0) {
+                resetResendLink();
+            } else {
+                updateCountdownDisplay();
+            }
+        }, 1000);
+    }
+
+    function updateCountdownDisplay() {
+        resendLink.textContent = `Resend in ${countdown}s`;
+    }
+
+    function resetResendLink() {
+        isResending = false;
+        countdown = 0;
+        if (countdownTimer) {
+            clearInterval(countdownTimer);
+        }
+        resendLink.textContent = 'Resend verification email';
+        resendLink.style.pointerEvents = 'auto';
+        resendLink.style.opacity = '1';
+    }
+});
+</script>
 {% endblock %}

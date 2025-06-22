@@ -11,12 +11,12 @@ from sendgrid.helpers.mail import Mail
 from home import settings
 
 
-@login_required
+@login_required(login_url='/users/log_in/')
 def conversation_list(request):
     conversations = request.user.conversations.filter(display=True)
     return render(request, 'conversation_list.html', {'conversations': conversations})
 
-@login_required
+@login_required(login_url='/users/log_in/')
 def conversation_detail(request, conversation_id):
     conversation = get_object_or_404(Conversation, id=conversation_id)
     conversation.display = True
@@ -47,7 +47,7 @@ def conversation_detail(request, conversation_id):
         return redirect('conversation_detail', conversation_id=conversation.id)
     return render(request, 'conversation_details.html', {'conversation': conversation})
 
-@login_required
+@login_required(login_url='/users/log_in/')
 def start_conversation(request):
     user = request.user
     other_user_email = request.GET.get('user_id')
@@ -73,7 +73,7 @@ def start_conversation(request):
     return redirect(reverse('conversation_detail', kwargs={'conversation_id': conversation.id}))
 
 
-@login_required
+@login_required(login_url='/users/log_in/')
 def delete_conversation(request, conversation_id):
     conversation = get_object_or_404(Conversation, id=conversation_id, participants=request.user)
     conversation.display = False

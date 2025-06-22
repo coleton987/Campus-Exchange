@@ -1,0 +1,326 @@
+/* Campus Exchange About Page Styles */
+/* This file only contains styles for the about page content - no layout/navigation styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8fafc;
+}
+
+.content-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    font-weight: 300;
+    opacity: 0.95;
+}
+
+/* Mission Section */
+.mission {
+    padding: 80px 0;
+    background: white;
+    text-align: center;
+}
+
+.mission h2 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.mission p {
+    font-size: 1.2rem;
+    color: #4a5568;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+/* How It Works Section */
+.how-it-works {
+    padding: 100px 0;
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+}
+
+.how-it-works h2 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    text-align: center;
+    margin-bottom: 60px;
+    font-weight: 600;
+}
+
+.steps-container {
+    display: grid;
+    gap: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    padding: 30px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.step::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.step-icon {
+    min-width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.step-content h3 {
+    font-size: 1.5rem;
+    color: #2d3748;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.step-content p {
+    color: #4a5568;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+/* Features Section */
+.features {
+    padding: 100px 0;
+    background: white;
+}
+
+.features h2 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    text-align: center;
+    margin-bottom: 60px;
+    font-weight: 600;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.feature-card {
+    text-align: center;
+    padding: 40px 30px;
+    background: #f7fafc;
+    border-radius: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    background: white;
+}
+
+.feature-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    color: white;
+    font-size: 1.6rem;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.feature-card h3 {
+    font-size: 1.4rem;
+    color: #2d3748;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.feature-card p {
+    color: #4a5568;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* CTA Section */
+.cta {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-align: center;
+}
+
+.cta h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.cta p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .mission h2,
+    .how-it-works h2,
+    .features h2,
+    .cta h2 {
+        font-size: 2rem;
+    }
+    
+    .step {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .step-icon {
+        margin: 0 auto;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 60px 0;
+    }
+    
+    .mission,
+    .how-it-works,
+    .features {
+        padding: 60px 0;
+    }
+    
+    .cta {
+        padding: 60px 0;
+    }
+    
+    .step {
+        padding: 25px 20px;
+    }
+    
+    .step-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.4rem;
+    }
+    
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.4rem;
+    }
+}

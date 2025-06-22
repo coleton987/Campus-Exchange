@@ -1,39 +1,143 @@
 {% extends 'layout.html' %}
-<html lang="en">
+{% load static %}
+
 {% block title %}
-    Messages
+    Messages - Campus Exchange
 {% endblock %}
 
 {% block css %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/messaging.css' %}">
+<link rel="stylesheet" href="{% static 'css/conversation_list.css' %}">
 {% endblock %}
 
 {% block content %}
-<h1>Your Conversations</h1>
-<div class="conv_cards">
-    {% for conversation in conversations %}
-    <a href="{% url 'conversation_detail' conversation.id %}" class="conv_card">
-        <div class="card_content">
-            <img src="{{ conversation.product.images.all.0.image.url }}" alt="{{ conversation.product.name }}" class="product-image">
-            <div class="card_text">
-                <p>
-                    Conversation with 
-                    {% for participant in conversation.participants.all %}
-                        {% if participant != request.user %}
-                            <span>{{ participant.full_name }}</span>
-                        {% endif %}
-                    {% endfor %}
-                    about <strong>{{ conversation.product.name }}</strong>
-                </p>
-            </div>
+<div class="messages-container">
+    <!-- Header Section -->
+    <div class="messages-header">
+        <div class="header-content">
+            <h1 class="messages-title">
+                <span class="title-icon">💬</span>
+                Your Conversations
+            </h1>
+            <p class="messages-subtitle">Stay connected with buyers and sellers</p>
         </div>
-    </a>
-    {% empty %}
-    <div class="no-conversations">
-        <p>You have no ongoing conversations at the moment.</p>
-        <p>Start browsing products to begin a conversation with a seller!</p>
     </div>
-    {% endfor %}
+
+    <!-- Conversations Section -->
+    <div class="conversations-section">
+        {% if conversations %}
+            <div class="conversations-grid">
+                {% for conversation in conversations %}
+                <a href="{% url 'conversation_detail' conversation.id %}" class="conversation-card">
+                    <div class="card-header">
+                        <div class="product-image-container">
+                            {% if conversation.product.images.all.0 %}
+                                <img src="{{ conversation.product.images.all.0.image.url }}" 
+                                     alt="{{ conversation.product.name }}" 
+                                     class="product-image">
+                            {% else %}
+                                <div class="product-image-placeholder">
+                                    <span>📦</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="conversation-info">
+                            <div class="participant-info">
+                                {% for participant in conversation.participants.all %}
+                                    {% if participant != request.user %}
+                                        <div class="participant-avatar">
+                                            {{ participant.full_name|first|upper }}
+                                        </div>
+                                        <div class="participant-details">
+                                            <h3 class="participant-name">{{ participant.full_name }}</h3>
+                                            <p class="conversation-type">
+                                                {% if conversation.product.user == request.user %}
+                                                    Interested in buying
+                                                {% else %}
+                                                    Selling to you
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="product-details">
+                            <h4 class="product-name">{{ conversation.product.name }}</h4>
+                            <p class="product-price">${{ conversation.product.price }}</p>
+                        </div>
+                        
+                        {% if conversation.latest_message %}
+                            <div class="latest-message">
+                                <p class="message-preview">{{ conversation.latest_message.content|truncatechars:50 }}</p>
+                                <span class="message-time">{{ conversation.latest_message.timestamp|timesince }} ago</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-footer">
+                        <div class="conversation-status">
+                            {% if conversation.unread_count > 0 %}
+                                <span class="unread-badge">{{ conversation.unread_count }} new</span>
+                            {% endif %}
+                            <span class="conversation-arrow">→</span>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-conversations">
+                <div class="no-conversations-content">
+                    <div class="no-conversations-icon">📭</div>
+                    <h2 class="no-conversations-title">No conversations yet</h2>
+                    <p class="no-conversations-description">
+                        Start browsing products to begin conversations with sellers, 
+                        or post your own items to connect with interested buyers.
+                    </p>
+                    <div class="no-conversations-actions">
+                        <a href="/listing/products" class="btn btn-primary">
+                            <span>🔍</span> Browse Products
+                        </a>
+                        <a href="/listing/add" class="btn btn-success">
+                            <span>➕</span> Post Listing
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Quick Actions Section -->
+    {% if conversations %}
+    <div class="quick-actions-section">
+        <div class="section-header">
+            <h2 class="section-title">Quick Actions</h2>
+        </div>
+        <div class="quick-actions-grid">
+            <a href="/listing/products" class="action-card">
+                <div class="action-icon">🔍</div>
+                <h3 class="action-title">Browse More</h3>
+                <p class="action-description">Find new products and start conversations</p>
+            </a>
+            
+            <a href="/listing/add" class="action-card">
+                <div class="action-icon">➕</div>
+                <h3 class="action-title">Sell Something</h3>
+                <p class="action-description">Post a new listing to attract buyers</p>
+            </a>
+            
+            <a href="/listing/my-listings" class="action-card">
+                <div class="action-icon">📋</div>
+                <h3 class="action-title">My Listings</h3>
+                <p class="action-description">Manage your posted items</p>
+            </a>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

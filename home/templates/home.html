@@ -39,8 +39,8 @@
                 <a href="/users/register" class="btn btn-hero-primary">
                     <span>🚀</span> Get Started Free
                 </a>
-                <a href="/listing/products" class="btn btn-hero-secondary">
-                    <span>👀</span> Browse Items
+                <a href="/users/log_in" class="btn btn-hero-secondary">
+                    <span>👍</span> Login
                 </a>
             </div>
             {% endif %}
@@ -157,29 +157,37 @@
         </div>
         
         <div class="categories-grid">
-            <a href="/listing/products?category=textbooks" class="category-card">
+            {% comment %} <a href="/listing/products?category=textbooks" class="category-card"> {% endcomment %}
+            <div class="category-card">
                 <div class="category-icon">📚</div>
                 <h3 class="category-title">Textbooks</h3>
                 {% comment %} <p class="category-count">200+ listings</p> {% endcomment %}
-            </a>
+            {% comment %} </a>
             
-            <a href="/listing/products?category=electronics" class="category-card">
+            <a href="/listing/products?category=electronics" class="category-card"> {% endcomment %}
+            </div>
+            <div class="category-card">
                 <div class="category-icon">💻</div>
                 <h3 class="category-title">Electronics</h3>
                 {% comment %} <p class="category-count">150+ listings</p> {% endcomment %}
-            </a>
+            </div>
+            {% comment %} </a>
             
-            <a href="/listing/products?category=furniture" class="category-card">
+            <a href="/listing/products?category=furniture" class="category-card"> {% endcomment %}
+            <div class="category-card">
                 <div class="category-icon">🪑</div>
                 <h3 class="category-title">Furniture</h3>
                 {% comment %} <p class="category-count">80+ listings</p> {% endcomment %}
-            </a>
+            {% comment %} </a>
             
-            <a href="/listing/products?category=clothing" class="category-card">
+            <a href="/listing/products?category=clothing" class="category-card"> {% endcomment %}
+            </div>
+            <div class="category-card">
                 <div class="category-icon">👕</div>
                 <h3 class="category-title">Clothing</h3>
                 {% comment %} <p class="category-count">120+ listings</p> {% endcomment %}
-            </a>
+            {% comment %} </a> {% endcomment %}
+            </div>
         </div>
     </section>
 
