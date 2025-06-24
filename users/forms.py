@@ -16,8 +16,8 @@ class CustomUserCreationForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        #if not email.endswith('@students.bju.edu'):
-        #    raise ValidationError("You must use a BJU email address (e.g., name@students.bju.edu).")
+        if not email.endswith('@students.bju.edu'):
+            raise ValidationError("You must use a BJU email address (e.g., name@students.bju.edu).")
         return email
 
     def save(self, commit=True):
