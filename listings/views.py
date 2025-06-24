@@ -154,30 +154,31 @@ def edit_listing(request, id):
 @login_required(login_url='/users/log_in/')
 def remove_image(request):
     if request.method == 'POST':
-        import json
-        data = json.loads(request.body)
-        image_id = data.get('image_id')
-        
-        if not image_id:
-            return JsonResponse({'error': 'Image ID is missing'}, status=400)
-        
         try:
+            data = json.loads(request.body)
+            image_id = data.get('image_id')
+            
+            if not image_id:
+                return JsonResponse({'success': False, 'error': 'Image ID is missing'}, status=400)
+            
             # Get the image and check if the user owns the product
             product_image = ProductImage.objects.get(id=image_id)
             
             # Optional: Add permission check
-            # if product_image.product.seller != request.user:
-            #     return JsonResponse({'error': 'Permission denied'}, status=403)
+            if product_image.product.seller != request.user:
+                return JsonResponse({'success': False, 'error': 'Permission denied'}, status=403)
             
             # Delete the image
             product_image.delete()
             
-            return JsonResponse({'message': 'Image removed successfully'}, status=200)
+            return JsonResponse({'success': True, 'message': 'Image removed successfully'}, status=200)
             
         except ProductImage.DoesNotExist:
-            return JsonResponse({'error': 'Image not found'}, status=404)
+            return JsonResponse({'success': False, 'error': 'Image not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
     
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+    return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
 
 
 

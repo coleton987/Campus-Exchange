@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings  
+from cloudinary.models import CloudinaryField
 
 
 class Product(models.Model):
@@ -17,7 +18,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='product_images/')
+    image = CloudinaryField('image', folder='product_images')
     order = models.PositiveIntegerField(default=0)  # Add ordering field
     
     class Meta:

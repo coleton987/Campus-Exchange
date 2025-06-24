@@ -444,7 +444,22 @@ function savePhotoOrder() {
 
 // Function to remove existing images
 function removeExistingImage(imageId, buttonElement) {
+    // Debug logging
+    console.log('removeExistingImage called with imageId:', imageId, 'type:', typeof imageId);
+    
+    // Validate imageId
+    if (!imageId || imageId === 'undefined' || imageId === '') {
+        console.error('Invalid image ID:', imageId);
+        alert('Error: Invalid image ID. Please refresh the page and try again.');
+        return;
+    }
+    
     if (confirm('Are you sure you want to remove this photo?')) {
+        // Add loading state to button
+        const originalText = buttonElement.innerHTML;
+        buttonElement.innerHTML = '⏳';
+        buttonElement.disabled = true;
+        
         fetch("{% url 'remove_image' %}", {
             method: "POST",
             headers: {
@@ -452,35 +467,59 @@ function removeExistingImage(imageId, buttonElement) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                'image_id': imageId
+                'image_id': parseInt(imageId) // Ensure it's an integer
             })
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log('Response data:', data);
             if (data.success) {
                 // Remove the image from the display
                 var imageItem = buttonElement.closest('.existing-image-item');
-                imageItem.remove();
-                
-                // Update current image count and dropzone max files
-                currentImageCount--;
-                myDropzone.options.maxFiles = maxImages - currentImageCount;
-                
-                // Check if no images left
-                var grid = document.getElementById('existing-images-grid');
-                if (grid.children.length === 0) {
-                    grid.innerHTML = '<p class="no-images-text">No photos uploaded yet</p>';
+                if (imageItem) {
+                    imageItem.remove();
+                    
+                    // Update current image count and dropzone max files
+                    currentImageCount--;
+                    if (myDropzone) {
+                        myDropzone.options.maxFiles = maxImages - currentImageCount;
+                    }
+                    
+                    // Check if no images left
+                    var grid = document.getElementById('existing-images-grid');
+                    if (grid && grid.children.length === 0) {
+                        grid.innerHTML = '<p class="no-images-text">No photos uploaded yet</p>';
+                    }
+                    
+                    // Remove from pending order changes if it was there
+                    if (pendingOrderChanges && pendingOrderChanges[imageId]) {
+                        delete pendingOrderChanges[imageId];
+                    }
+                    
+                    console.log('Image removed successfully');
+                } else {
+                    console.error('Could not find image item to remove');
                 }
-                
-                // Remove from pending order changes if it was there
-                delete pendingOrderChanges[imageId];
             } else {
-                alert('Error removing image: ' + data.error);
+                console.error('Server returned error:', data.error);
+                alert('Error removing image: ' + (data.error || 'Unknown error'));
+                // Reset button on error
+                buttonElement.innerHTML = originalText;
+                buttonElement.disabled = false;
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            alert('Error removing image. Please try again.');
+            console.error('Fetch error:', error);
+            alert('Error removing image. Please try again. Error: ' + error.message);
+            // Reset button on error
+            buttonElement.innerHTML = originalText;
+            buttonElement.disabled = false;
         });
     }
 }
@@ -512,6 +551,7 @@ document.getElementById("submit-product-btn").addEventListener("click", function
             if (myDropzone.getQueuedFiles().length > 0) {
                 console.log("Processing new image uploads...");
                 myDropzone.processQueue();
+                window.location.href = data.redirect_url || "{% url 'product_details' product.id %}";
             } else {
                 // No new images, redirect to product details
                 window.location.href = data.redirect_url || "{% url 'product_details' product.id %}";
