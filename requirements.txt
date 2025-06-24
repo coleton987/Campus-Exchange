@@ -11,6 +11,7 @@ Django==5.1.5
 django-appconf==1.0.6
 django-cloudinary-storage==0.3.0
 django-image-uploader-widget==1.0.0
+gunicorn==23.0.0
 idna==3.7
 jsonpickle==3.0.4
 jsonpointer==2.4
