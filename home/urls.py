@@ -10,6 +10,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('listing/', include('listings.urls')),
     path('messaging/', include('messaging.urls')),
+    path('healthz/', views.healthz, name='healthz'),
     #path('payment/', include('payment.urls')),
     #path('seller/', include('seller.urls')),
 ] 
