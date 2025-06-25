@@ -4,7 +4,7 @@ on:
   schedule:
     # runs at minute 0,14,28,42 of every hour
     - cron: '*/14 * * * *'
-
+  workflow_dispatch:    # ← adds a manual trigger
 jobs:
   ping:
     runs-on: ubuntu-latest
