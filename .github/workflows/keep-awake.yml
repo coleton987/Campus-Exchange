@@ -1,17 +1,15 @@
-name: Keep Campus Exchange Awake
+name: Test Schedule
 on:
   schedule:
-    # runs at minute 0,14,28,42,56 of every hour
-    - cron: '0,14,28,42,56 * * * *'
-  workflow_dispatch:    # ← adds a manual trigger
+    # Run every 5 minutes for testing
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
 jobs:
-  ping:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping health endpoint
+      - name: Simple test
         run: |
-          STATUS=$(curl -o /dev/null -s -w "%{http_code}" https://campus-exchange-rhcm.onrender.com/healthz/)
-          if [ "$STATUS" -ne 200 ]; then
-            echo "Health check returned $STATUS" >&2
-            exit 1
-          fi
+          echo "Workflow ran at $(date)"
+          echo "This is a test to verify scheduling wor
