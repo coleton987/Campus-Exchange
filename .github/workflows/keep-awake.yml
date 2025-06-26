@@ -1,9 +1,8 @@
 name: Keep Campus Exchange Awake
-
 on:
   schedule:
-    # runs at minute 0,14,28,42 of every hour
-    - cron: '*/14 * * * *'
+    # runs at minute 0,14,28,42,56 of every hour
+    - cron: '0,14,28,42,56 * * * *'
   workflow_dispatch:    # ← adds a manual trigger
 jobs:
   ping:
