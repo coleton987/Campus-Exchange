@@ -6,15 +6,68 @@ from users.models import CustomUser
 from django.urls import reverse
 from django.http import HttpResponseForbidden
 from django.db.models import Q
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail, Personalization, To
-from home import settings
+from django.conf import settings
+import requests
+import json
+
+
+def send_message_notification_email(recipient_email, recipient_name, sender_name, message_preview, conversation_url):
+    """Send message notification email using Brevo Transactional Email API"""
+    try:
+        # Brevo API endpoint
+        url = "https://api.brevo.com/v3/smtp/email"
+        
+        # Headers for Brevo API
+        headers = {
+            'api-key': settings.EMAIL_API_KEY,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+        
+        # Email payload with template
+        payload = {
+            "sender": {
+                "name": "Campus Exchange",
+                "email": settings.DEFAULT_FROM_EMAIL
+            },
+            "to": [
+                {
+                    "email": recipient_email,
+                    "name": recipient_name
+                }
+            ],
+            "templateId": 2,  # Your message notification template ID
+            "params": {
+                "recipient_name": recipient_name,
+                "sender_name": sender_name,
+                "message_preview": message_preview,
+                "conversation_url": conversation_url
+            }
+        }
+        
+        # Send the email
+        response = requests.post(url, headers=headers, data=json.dumps(payload))
+        
+        print(f"Brevo Response Status: {response.status_code}")
+        print(f"Brevo Response Body: {response.text}")
+        
+        # Check if request was successful
+        if response.status_code == 201:
+            return True
+        else:
+            print(f"Brevo API Error: {response.status_code} - {response.text}")
+            return False
+
+    except Exception as e:
+        print(f"Brevo Email Error: {e}")
+        return False
 
 
 @login_required(login_url='/users/log_in/')
 def conversation_list(request):
     conversations = request.user.conversations.filter(display=True)
     return render(request, 'conversation_list.html', {'conversations': conversations})
+
 
 @login_required(login_url='/users/log_in/')
 def conversation_detail(request, conversation_id):
@@ -33,7 +86,7 @@ def conversation_detail(request, conversation_id):
         if text:
             Message.objects.create(conversation=conversation, sender=request.user, text=text)
 
-            # Send notification email using SendGrid dynamic template
+            # Send notification email using Brevo
             try:
                 conversation_url = request.build_absolute_uri(
                     reverse('conversation_detail', kwargs={'conversation_id': conversation.id})
@@ -43,43 +96,32 @@ def conversation_detail(request, conversation_id):
                 recipient_name = other_user.full_name if other_user.full_name else "Student"
                 sender_name = request.user.full_name if request.user.full_name else "Anonymous"
 
-                template_data = {
-                    'recipient_name': recipient_name,
-                    'sender_name': sender_name,
-                    'message_preview': text[:150] + '...' if len(text) > 150 else text,
-                    'conversation_url': conversation_url
-                }
+                # Prepare message preview (limit to 150 characters)
+                message_preview = text[:150] + '...' if len(text) > 150 else text
                 
-                # Create the email message with dynamic template
-                message = Mail(
-                    from_email='cmill026@students.bju.edu',
-                    to_emails=To(other_user.email),
-                    subject=f'New message from {sender_name} - Campus Exchange'
+                # Send notification email
+                success = send_message_notification_email(
+                    recipient_email=other_user.email,
+                    recipient_name=recipient_name,
+                    sender_name=sender_name,
+                    message_preview=message_preview,
+                    conversation_url=conversation_url
                 )
                 
-                # Set the template ID (replace with your actual SendGrid template ID)
-                message.template_id = 'd-3748a6d436d143b29ff38b686d6044a3'  # Get this from SendGrid dashboard
-
-                # Add dynamic template data
-                message.dynamic_template_data = template_data
-
-                sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
-                response = sg.send(message)
-                print(f"SendGrid status: {response.status_code}")
-                
-                if response.status_code == 202:
-                    print("Email sent successfully!")
+                if success:
+                    print("Message notification email sent successfully!")
                 else:
-                    print(f"Email sending failed with status: {response.status_code}")
+                    print("Failed to send message notification email")
 
             except Exception as e:
-                print(f"SendGrid error: {str(e)}")
+                print(f"Email notification error: {str(e)}")
                 import traceback
                 print(f"Full error: {traceback.format_exc()}")
 
         return redirect('conversation_detail', conversation_id=conversation.id)
 
     return render(request, 'conversation_details.html', {'conversation': conversation})
+
 
 @login_required(login_url='/users/log_in/')
 def start_conversation(request):
@@ -92,12 +134,10 @@ def start_conversation(request):
     product = get_object_or_404(Product, id=product_id)
 
     # Check if a conversation for this product between these users already exists
-    
     conversation = Conversation.objects.filter(
         product=product,
         participants__in=[user, other_user]
     ).distinct().filter(participants=user).filter(participants=other_user).first()
-
 
     # Create a new conversation if none exists
     if not conversation:

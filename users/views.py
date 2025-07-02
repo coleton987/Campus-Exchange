@@ -4,11 +4,10 @@ from .forms import CustomUserCreationForm
 from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
+from django.conf import settings
 import random
-from home import settings
-import os
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail,To, From
+import requests
+import json
 
 
 def register(request):
@@ -36,24 +35,55 @@ def register(request):
 
 
 def send_verification_email(email, code):
-    """Send verification email using SendGrid Dynamic Template"""
+    """Send verification email using Brevo Transactional Email API"""
     try:
-        message = Mail(
-            from_email=From('cmill026@students.bju.edu', 'Campus Exchange'),
-            to_emails=To(email)
-        )
-        message.template_id = settings.SENDGRID_VERIFICATION_TEMPLATE_ID
-        message.dynamic_template_data = {
-            'code': code
+        # Debug: Print the API key being used
+        api_key = settings.EMAIL_API_KEY
+        
+        
+        # Brevo API endpoint - Use the correct REST API URL
+        url = "https://api.brevo.com/v3/smtp/email"
+        
+        # Try different header formats that Brevo might accept
+        headers = {
+            'api-key': api_key,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         }
-
-        sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
-        response = sg.send(message)
-        print(f"SendGrid Response: {response.status_code}")
-        return True
+        
+        # Email payload
+        payload = {
+            "sender": {
+                "name": "Campus Exchange",
+                "email": settings.DEFAULT_FROM_EMAIL
+            },
+            "to": [
+                {
+                    "email": email,
+                    "name": "User"
+                }
+            ],
+            "templateId": 1,  # Your verification-code template ID
+            "params": {
+                "code": str(code)
+            }
+        }
+        
+        # Send the email
+        response = requests.post(url, headers=headers, data=json.dumps(payload))
+        
+        print(f"Brevo Response Status: {response.status_code}")
+        print(f"Brevo Response Body: {response.text}")
+        
+        # Check if request was successful
+        if response.status_code == 201:
+            return True
+        else:
+            print(f"Brevo API Error: {response.status_code} - {response.text}")
+            return False
 
     except Exception as e:
-        print(f"SendGrid Email Error: {e}")
+        print(f"Brevo Email Error: {e}")
         return False
 
 

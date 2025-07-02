@@ -53,9 +53,9 @@
                                             <h3 class="participant-name">{{ participant.full_name }}</h3>
                                             <p class="conversation-type">
                                                 {% if conversation.product.user == request.user %}
-                                                    Interested in buying
-                                                {% else %}
                                                     Selling to you
+                                                {% else %}
+                                                    Interested in buying 
                                                 {% endif %}
                                             </p>
                                         </div>

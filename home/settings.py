@@ -125,8 +125,19 @@ USE_TZ = True
 # -----------------------------------------------
 # Third-Party API Keys
 # -----------------------------------------------
-SENDGRID_API_KEY = config('SENDGRID_API_KEY', default='')
-SENDGRID_VERIFICATION_TEMPLATE_ID = config('SENDGRID_VERIFICATION_TEMPLATE_ID', default='')
+# Tell Django to use SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Sendinblue SMTP relay
+EMAIL_HOST = 'smtp-relay.sendinblue.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = config('SENDINBLUE_SMTP_USER', default='')
+EMAIL_HOST_PASSWORD = config('SENDINBLUE_SMTP_PASS', default='')
+EMAIL_API_KEY = config('SENDINBLUE_API_KEY', default='')
+EMAIL_USE_TLS = True
+
+# Default “from” address for all outgoing mail
+DEFAULT_FROM_EMAIL = 'campusexchange.bju@gmail.com'
 
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY', default='')
 STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY', default='')
