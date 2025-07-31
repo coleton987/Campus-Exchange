@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # Turn off debug mode in production
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 # Define allowed hosts (comma-separated in .env)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='', cast=lambda v: [h.strip() for h in v.split(',') if h])
@@ -44,8 +44,7 @@ INSTALLED_APPS = [
     'image_uploader_widget',
     'listings',
     'messaging',
-    'payment',
-    'seller',
+
     'users',
 ]
 
@@ -104,6 +103,14 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': config('CLOUDINARY_API_SECRET'),
 }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+import cloudinary
+
+cloudinary.config( 
+    cloud_name=config('CLOUDINARY_CLOUD_NAME'), 
+    api_key=config('CLOUDINARY_API_KEY'), 
+    api_secret=config('CLOUDINARY_API_SECRET') 
+)
 
 # -----------------------------------------------
 # Static Files (CSS, JavaScript, Images)

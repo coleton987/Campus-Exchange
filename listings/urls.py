@@ -15,5 +15,3 @@ urlpatterns = [
     path('update-photo-order/', views.update_photo_order, name='update_photo_order'),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -7,12 +7,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.homepage),
     path('about/', views.about),
-    path('users/', include('users.urls')),
+    path('users/', include(('users.urls', 'users'), namespace='users')),
     path('listing/', include('listings.urls')),
     path('messaging/', include('messaging.urls')),
     path('healthz/', views.healthz, name='healthz'),
     #path('payment/', include('payment.urls')),
     #path('seller/', include('seller.urls')),
 ] 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
