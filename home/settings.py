@@ -144,7 +144,7 @@ EMAIL_API_KEY = config('SENDINBLUE_API_KEY', default='')
 EMAIL_USE_TLS = True
 
 # Default “from” address for all outgoing mail
-DEFAULT_FROM_EMAIL = 'campusexchange.bju@gmail.com'
+DEFAULT_FROM_EMAIL = 'noreply@campus-exchange.me'
 
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY', default='')
 STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY', default='')
