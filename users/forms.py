@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from .models import CustomUser
-
+from django.contrib.auth.forms import PasswordResetForm
 
 class CustomUserCreationForm(UserCreationForm):
     full_name = forms.CharField(max_length=60, required=True)
@@ -37,4 +37,23 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
-    
+
+class CustomPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(
+        max_length=254,
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your BJU email address',
+            'autocomplete': 'email',
+            'id': 'id_email'
+        })
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        
+        # Optional: Add BJU domain validation if needed
+        # if not email.endswith('@bju.edu'):
+        #     raise forms.ValidationError("Please use your BJU email address.")
+        
+        return email
