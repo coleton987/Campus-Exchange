@@ -82,6 +82,9 @@ body {
     padding: 0.5rem 0;
     position: relative;
     transition: color 0.3s ease;
+    display: flex;
+        align-items: center;
+        gap: 0.5rem;
 }
 
 .nav-link:hover {
@@ -103,6 +106,37 @@ body {
     width: 100%;
 }
 
+/* Message Badge Styles */
+.message-badge {
+    background: #ef4444;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0;
+    border-radius: 50%;
+    min-width: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+    border: 2px solid white;
+    animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
 /* Profile Dropdown */
 .profile-dropdown {
     position: relative;
@@ -221,12 +255,16 @@ body {
     color: #374151;
     font-weight: 500;
     transition: background-color 0.2s ease;
+    justify-content: space-between;
 }
 
 .dropdown-item:hover {
     background: #f8fafc;
 }
 
+.dropdown-item .message-badge {
+    margin-left: auto;
+}
 .dropdown-item.logout {
     color: #dc2626;
 }
@@ -344,6 +382,9 @@ body {
     text-decoration: none;
     color: #374151;
     font-weight: 500;
+    display: flex;
+        align-items: center;
+        justify-content: space-between;
     border-radius: 0.5rem;
     transition: background-color 0.2s ease;
 }

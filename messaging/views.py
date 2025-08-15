@@ -66,7 +66,16 @@ def send_message_notification_email(recipient_email, recipient_name, sender_name
 @login_required(login_url='/users/log_in/')
 def conversation_list(request):
     conversations = request.user.conversations.filter(display=True)
-    return render(request, 'conversation_list.html', {'conversations': conversations})
+    
+    # Add unread count and latest message for each conversation
+    conversations_with_data = []
+    for conversation in conversations:
+        conversation.unread_count = conversation.get_unread_count_for_user(request.user)
+        conversation.latest_message = conversation.get_latest_message()
+        conversation.other_participant = conversation.get_other_participant(request.user)
+        conversations_with_data.append(conversation)
+    
+    return render(request, 'conversation_list.html', {'conversations': conversations_with_data})
 
 
 @login_required(login_url='/users/log_in/')
@@ -77,6 +86,14 @@ def conversation_detail(request, conversation_id):
 
     # Get the other participant (not the current user)
     other_user = conversation.participants.exclude(id=request.user.id).first()
+
+    # Mark all messages in this conversation as read for the current user
+    # (except messages sent by the current user)
+    unread_messages = conversation.messages.filter(
+        is_read=False
+    ).exclude(sender=request.user)
+    
+    unread_messages.update(is_read=True)
 
     if request.user not in conversation.participants.all():
         return HttpResponseForbidden("You are not authorized to view this conversation.")

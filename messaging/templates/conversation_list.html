@@ -50,7 +50,12 @@
                                             {{ participant.full_name|first|upper }}
                                         </div>
                                         <div class="participant-details">
-                                            <h3 class="participant-name">{{ participant.full_name }}</h3>
+                                            <h3 class="participant-name">
+                                                {{ participant.full_name }}
+                                                {% if conversation.unread_count > 0 %}
+                                                    <span class="message-badge">{{ conversation.unread_count }}</span>
+                                                {% endif %}
+                                            </h3>
                                             <p class="conversation-type">
                                                 {% if conversation.product.user == request.user %}
                                                     Selling to you
@@ -73,7 +78,7 @@
                         
                         {% if conversation.latest_message %}
                             <div class="latest-message">
-                                <p class="message-preview">{{ conversation.latest_message.content|truncatechars:50 }}</p>
+                                <p class="message-preview">{{ conversation.latest_message.text|truncatechars:50 }}</p>
                                 <span class="message-time">{{ conversation.latest_message.timestamp|timesince }} ago</span>
                             </div>
                         {% endif %}
@@ -81,9 +86,6 @@
                     
                     <div class="card-footer">
                         <div class="conversation-status">
-                            {% if conversation.unread_count > 0 %}
-                                <span class="unread-badge">{{ conversation.unread_count }} new</span>
-                            {% endif %}
                             <span class="conversation-arrow">→</span>
                         </div>
                     </div>
