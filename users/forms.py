@@ -16,8 +16,8 @@ class CustomUserCreationForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        # if not email.endswith('@students.bju.edu'):
-        #     raise ValidationError("You must use a BJU email address (e.g., name@students.bju.edu).")
+        if not email.endswith('@students.bju.edu'):
+            raise ValidationError("You must use a BJU email address (e.g., name@students.bju.edu).")
         return email
 
     def save(self, commit=True):
@@ -53,7 +53,7 @@ class CustomPasswordResetForm(PasswordResetForm):
         email = self.cleaned_data['email']
         
         # Optional: Add BJU domain validation if needed
-        # if not email.endswith('@bju.edu'):
-        #     raise forms.ValidationError("Please use your BJU email address.")
+        if not email.endswith('@bju.edu'):
+            raise forms.ValidationError("Please use your BJU email address.")
         
         return email
